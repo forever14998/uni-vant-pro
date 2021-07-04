@@ -17,23 +17,33 @@
 /* 行为相关颜色 */
 $van-color-main: #3f8cf4;
 $van-color-icon: #969799;
+$van-color-disabled: #c8c9cc;
+$van-color-btn: #ffffff;
 
 /* 文字基本颜色 */
+$van-text-main: #333333;
+$van-text-grey: #999999;
 
 /* 背景颜色 */
 $van-bg-content: #ffffff;
 $van-bg-overlay: rgba(0, 0, 0, 0.3);
+$van-bg-grey: #f7f8fa;
 
 /* 边框颜色 */
+$van-border-main: #eeeeee;
 
 /* 尺寸变量 */
 
 /* 文字尺寸 */
-$van-font-size-sm:24rpx;
-$van-font-size-base:28rpx;
-$van-font-size-lg:32rpx;
+$van-font-size-sm: 24rpx;
+$van-font-size-base: 28rpx;
+$van-font-size-lg: 32rpx;
+$van-font-size-title: 60rpx;
 
 /* 图片尺寸 */
+$van-image-sm: 80rpx;
+$van-image-base: 100rpx;
+$van-image-lg: 180rpx;
 
 /* Border Radius */
 $van-border-radius-sm: 8rpx;

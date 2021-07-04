@@ -1,10 +1,22 @@
 <template>
 	<view>
-		<view v-if="inited" class="van-transition" :class="classes, customClass" :style="rootStyle" @transitionend="onTransitionEnd"><slot /></view>
+		<view v-if="inited" class="van-transition" :class="classes" :style="rootStyle" @transitionend="onTransitionEnd"><slot /></view>
 	</view>
 </template>
 
 <script>
+/**
+ * @property {Boolean} value 是否显示组件
+ * @property {Number} duration 动画时长，单位毫秒
+ * @property {Number} name 动画名称 fade|slide-up|slide-down|slide-left|slide-right|fade-up|fade-down|fade-left|fade-right
+ * @property {Object} custom-style 自定义样式
+ * @event {Function} before-enter 组件加载前
+ * @event {Function} enter 组件加载时
+ * @event {Function} after-enter 组件加载完成后
+ * @event {Function} before-leave 离开组件前
+ * @event {Function} leave 离开组件时
+ * @event {Function} after-leave 离开组件后
+ */
 const getClassNames = name => ({
 	enter: `van-${name}-enter van-${name}-enter-active enter-class enter-active-class`,
 	'enter-to': `van-${name}-enter-to van-${name}-enter-active enter-to-class enter-active-class`,
@@ -18,17 +30,13 @@ export default {
 			default: true
 		},
 		duration: {
-			type: null,
+			type: Number,
 			default: 300,
 			observer: 'observeDuration'
 		},
 		name: {
 			type: String,
 			default: 'fade'
-		},
-		customClass: {
-			type: String,
-			default: ''
 		},
 		customStyle: {
 			type: Object,
@@ -68,7 +76,7 @@ export default {
 				},
 				this.display ? null : 'display: none'
 			]);
-			return info
+			return info;
 		}
 	},
 	methods: {
@@ -140,16 +148,14 @@ export default {
 		},
 		style(styles) {
 			if (this.$u.validator.isArray(styles)) {
-				
 				return styles
-					.filter(item=> item != null && item !== '')
-					.map(item=>this.style(item))
+					.filter(item => item != null && item !== '')
+					.map(item => this.style(item))
 					.join(';');
 			}
 
 			if (styles instanceof Object) {
-				return Object
-					.keys(styles)
+				return Object.keys(styles)
 					.filter(function(key) {
 						return styles[key] != null && styles[key] !== '';
 					})

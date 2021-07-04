@@ -1,6 +1,13 @@
 <template>
 	<view>
-		<van-popup v-model:show="popupShow" :position="position" :border-radius="round" :safe-area-inset-bottom="safeAreaInsetbottom">
+		<van-popup
+			v-model="popupShow"
+			:position="position"
+			:border-radius="round"
+			:close-on-click-overlay="closeOnClick"
+			:safe-area-inset-bottom="safeAreaInsetBottom"
+			@close="close()"
+		>
 			<view class="van-calendar__view">
 				<view class="van-calendar__header__border">
 					<view class="van-calendar_top_headline" :style="[headerStyle]">
@@ -29,7 +36,7 @@
 									class="van-calendar__day"
 									:class="'van-calendar__day--' + daysItem.type"
 								>
-									<view v-if="daysItem.type === 'selected'" class="van-calendar__selected-day">
+									<view v-if="daysItem.type === 'selected'" class="van-calendar__selected-day" :style="{ 'background-color': color }">
 										<view v-if="daysItem.topInfo" class="van-calendar__top-info">{{ daysItem.topInfo }}</view>
 										{{ daysItem.text }}
 										<view v-if="daysItem.bottomInfo" class="van-calendar__bottom-info">{{ daysItem.bottomInfo }}</view>
@@ -45,7 +52,7 @@
 						</view>
 					</view>
 				</scroll-view>
-				<view class="van-calendar__footer " :class="safeAreaInsetbottom ? 'safe-area-inset-bottom' : ''" @click="onConfirm()" v-if="!(type === 'range' && !showConfirm)">
+				<view class="van-calendar__footer " :class="safeAreaInsetBottom ? 'safe-area-inset-bottom' : ''" @click="onConfirm()" v-if="!(type === 'range' && !showConfirm)">
 					<view class="van-calendar__footer_button" hover-class="van-calendar__footer_button_hover" :style="[buttonStyle]">{{ buttonText }}</view>
 				</view>
 			</view>
@@ -54,15 +61,35 @@
 </template>
 
 <script>
-import Vue from 'vue';
 /**
- * @property {String} pooup-mode 弹出方式 left|right|top|bottom|center
- * @property {String} header-title 标题头
+ * @property {String} type 弹出方式 left|right|top|bottom|center
+ * @property {String} header-title 组件标题
+ * @property {String} color 选中日期以及组件按钮颜色
+ * @property {Boolean} close-on-click 是否允许点击遮罩层关闭
+ * @property {Date} min-date 可选择的最小日期，默认是当前日期
+ * @property {Date} max-date 可选择的最大日期，默认是距离今天6个月后的日期
+ * @property {Date | Date[] | null} default-date 默认选中的日期
+ * @property {(day: Day) => Day} formatter 日期格式化函数
+ * @property {Boolean} allow-same-day 是否允许开始日期和结束日期是同一天（只在type是range时有效）
+ * @property {Number| String} max-range 可选日期的最大跨度（只在type是range时有效）
+ * @property {Boolean} show-range-prompt 当选择范围超过跨度时是否弹出提示(只在type是range时有效)
+ * @property {Boolean} show-onfirm 是否展示确认按钮（只在type是range时有效）
+ * @property {Number| String} round 圆角
+ * @property {Boolean} safe-area-inset-bottom 是否需要适配ios底部安全区域
+ * @property {String} button-text 按钮文案
+ * @property {Object} button-all-style 自定义按钮样式
+ * @property {Number} first-day-of-week 设置周起始日
  * @event {Function} open 弹出层打开
  * @event {Function} close 弹出层收起
  */
+import Vue from 'vue';
 export default {
 	props: {
+		// 是否显示组件
+		value: {
+			type: Boolean,
+			default: false
+		},
 		/**
 		 * single表示选择单个日期，
 		 * multiple表示选择多个日期，
@@ -72,37 +99,28 @@ export default {
 			type: String,
 			default: 'range'
 		},
-		// 最小日期，默认是当前日期
-		minDate: {
-			default: () => new Date()
-		},
-		// 最大日期，默认是距离今天6个月后的日期
-		maxDate: {
-			default: () => new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate())
-		},
-		// 日期格式化函数
-		formatter: {
-			observer: 'setDays'
-		},
 		// 组件标题
 		headerTitle: {
 			type: String,
 			default: '选择日期'
 		},
-		// 选中当前日期的颜色，按钮颜色
+		// 选中日期以及组件按钮颜色
 		color: {
 			type: String,
-			default: '$van-color-main'
+			default: ''
 		},
-		//  只在type是range时有效，是否允许开始日期和结束日期是同一天
-		allowSameDay: {
+		// 是否允许点击遮罩层关闭
+		closeOnClick: {
 			type: Boolean,
-			default: false
+			default: true
 		},
-		// 只在type是range时有效，可选日期的最大跨度
-		maxRange: {
-			type: [Number, String],
-			default: null
+		// 可选择的最小日期，默认是当前日期
+		minDate: {
+			default: () => new Date().getTime()
+		},
+		// 可选择的最大日期，默认是距离今天6个月后的日期
+		maxDate: {
+			default: () => new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()).getTime()
 		},
 		// 默认选中日期
 		defaultDate: {
@@ -111,25 +129,37 @@ export default {
 				this.currentDate = val;
 			}
 		},
-		// 只在type是range时有效，当选择范围超过跨度时是否弹出提示
+		// 日期格式化函数
+		formatter: {
+			observer: 'setDays'
+		},
+		//  是否允许开始日期和结束日期是同一天（只在type是range时有效）
+		allowSameDay: {
+			type: Boolean,
+			default: false
+		},
+		// 可选日期的最大跨度（只在type是range时有效）
+		maxRange: {
+			type: [Number, String],
+			default: null
+		},
+		// 当选择范围超过跨度时是否弹出提示(只在type是range时有效)
 		showRangePrompt: {
 			type: Boolean,
 			default: false
 		},
-		// 是否展示确认按钮。只在type是range时有效
+		// 是否展示确认按钮。（只在type是range时有效）
 		showConfirm: {
 			type: Boolean,
 			default: true
 		},
-		/**
-		 * 圆角，组件圆角
-		 */
+		// 圆角，组件圆角
 		round: {
 			type: [Number, String],
 			default: 18
 		},
 		// 是否需要适配ios底部安全区域
-		safeAreaInsetbottom: {
+		safeAreaInsetBottom: {
 			type: Boolean,
 			default: true
 		},
@@ -143,7 +173,7 @@ export default {
 			type: Object,
 			default: () => ({})
 		},
-		// 第一天显示周几，默认为0，第一天显示周天
+		// 设置周起始日
 		firstDayOfWeek: {
 			type: Number,
 			default: 0
@@ -156,13 +186,24 @@ export default {
 			subtitle: '',
 			weekdays: [],
 			defaultButtonStyle: {
-				color: '#ffffff',
 				height: '70rpx',
 				borderRadius: '40rpx'
 			},
 			popupShow: false,
-			position: 'bottom',
+			position: 'bottom'
 		};
+	},
+	watch: {
+		value: function(val) {
+			if (val) {
+				this.open();
+			} else {
+				this.close();
+			}
+		}
+	},
+	mounted() {
+		this.value && this.open();
 	},
 	computed: {
 		getDaysByComputed(item) {
@@ -178,13 +219,13 @@ export default {
 		},
 		// 按钮自定义class
 		buttonStyle() {
-			return Object.assign(this.defaultButtonStyle, this.buttonAllStyle);
+			return Object.assign(this.defaultButtonStyle, { backgroundColor: this.color }, this.buttonAllStyle);
 		}
 	},
 	methods: {
 		open() {
 			this.popupShow = true;
-			this.initCalender()
+			this.initCalender();
 		},
 		close() {
 			this.popupShow = false;
@@ -208,7 +249,6 @@ export default {
 			if (index === 0) {
 				style.marginLeft = (100 * offset) / 7 + '%';
 			}
-
 			if (this.color) {
 				if (type === 'start' || type === 'end' || type === 'start-end' || type === 'multiple-selected' || type === 'multiple-middle') {
 					style.background = this.color;
@@ -465,7 +505,7 @@ scroll-view {
 .van-calendar_top_close {
 	position: absolute;
 	z-index: 1;
-	color: #c8c9cc;
+	color: $van-color-disabled;
 	font-size: $van-font-size-base;
 	cursor: pointer;
 	right: $van-margin-lg;
@@ -483,6 +523,7 @@ scroll-view {
 	align-items: center;
 	justify-content: center;
 	background-color: $van-color-main;
+	color: $van-color-btn;
 	font-size: $van-font-size-base;
 }
 
@@ -512,7 +553,7 @@ scroll-view {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: #FFFFFF;
+		color: $van-color-btn;
 		font-size: $van-font-size-lg;
 		opacity: 1;
 	}
@@ -542,7 +583,7 @@ scroll-view {
 	-webkit-flex-direction: column;
 	flex-direction: column;
 	height: 100%;
-	background-color: #fff;
+	background-color: $van-bg-content;
 }
 
 .van-calendar__month-title {
@@ -587,7 +628,6 @@ scroll-view {
 	width: 14.285%;
 	height: 128rpx;
 	font-size: $van-font-size-lg;
-	
 }
 
 .van-calendar__day--end,
@@ -595,7 +635,7 @@ scroll-view {
 .van-calendar__day--multiple-selected,
 .van-calendar__day--start,
 .van-calendar__day--start-end {
-	color: #fff;
+	color: $van-color-btn;
 	background-color: $van-color-main;
 }
 
@@ -629,7 +669,7 @@ scroll-view {
 
 .van-calendar__day--disabled {
 	cursor: default;
-	color: #c8c9cc;
+	color: $van-color-disabled;
 }
 
 .van-calendar__bottom-info,
@@ -659,7 +699,7 @@ scroll-view {
 .van-calendar__selected-day {
 	width: 106rpx;
 	height: 106rpx;
-	color: #fff;
+	color: $van-color-btn;
 	background-color: $van-color-main;
 	border-radius: $van-border-radius-sm;
 }

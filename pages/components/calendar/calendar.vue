@@ -60,15 +60,15 @@
 				</view>
 			</view>
 		</view>
-		<view class="condition-div">
+		<!-- <view class="condition-div">
 			<view class="condition-title">可选日期最大跨度</view>
 			<view class="condition-content">
 				<view class="condition-unit" :class="{ 'select-unit': selectRange === item.type }" v-for="(item, index) in rangeType" :key="index" @click="chooseRange(item.type)">
 					{{ item.mode }}
 				</view>
 			</view>
-		</view>
-		<view class="condition-div">
+		</view> -->
+		<!-- 	<view class="condition-div">
 			<view class="condition-title">超过可选范围是否提示</view>
 			<view class="condition-content">
 				<view
@@ -81,7 +81,7 @@
 					{{ item.mode }}
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<view class="condition-div">
 			<view class="condition-title">默认日期</view>
 			<view class="condition-content">
@@ -106,7 +106,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="condition-div">
+		<!-- <view class="condition-div">
 			<view class="condition-title">是否展示确认按钮</view>
 			<view class="condition-content">
 				<view
@@ -119,15 +119,15 @@
 					{{ item.mode }}
 				</view>
 			</view>
-		</view>
-		<view class="condition-div">
+		</view> -->
+		<!-- <view class="condition-div">
 			<view class="condition-title">第一列显示周几</view>
 			<view class="condition-content">
 				<view class="condition-unit" :class="{ 'select-unit': selectWeek === item.type }" v-for="(item, index) in weekType" :key="index" @click="chooseWeek(item.type)">
 					{{ item.mode }}
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<view class="condition-div">
 			<view class="condition-title">是否适配ios底部安全区域</view>
 			<view class="condition-content">
@@ -142,14 +142,14 @@
 				</view>
 			</view>
 		</view>
-		<view class="condition-div">
+		<!-- <view class="condition-div">
 			<view class="condition-title">按钮文案</view>
 			<view class="condition-content">
 				<view class="condition-unit" :class="{ 'select-unit': selectBtnText === item }" v-for="(item, index) in btnTextType" :key="index" @click="chooseBtnText(item)">
 					{{ item }}
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<view class="condition-div">
 			<view class="condition-title">自定义按钮样式</view>
 			<view class="condition-content">
@@ -162,51 +162,51 @@
 		<!-- :position="selectPostion" -->
 		<van-calendar
 			type="single"
-			ref="singleCalender"
-			:minDate="minDate"
-			:maxDate="maxDate"
-			:headerTitle="selectHeadline"
+			v-model="singleCalender"
+			:min-date="selectMinDate"
+			:max-date="selectMaxDate"
+			:header-title="selectHeadline"
 			:color="selectColor"
-			:defaultDate="selectDefault"
+			:default-date="selectDefault"
 			:round="selectRound"
-			:safeAreaInsetbottom="selectSafeArea"
-			:buttonText="selectBtnText"
-			:buttonAllStyle="selectBtnStyle"
-			:firstDayOfWeek="selectWeek"
+			:safe-area-inset-bottom="selectSafeArea"
+			:button-text="selectBtnText"
+			:button-all-style="selectBtnStyle"
+			:first-day-of-week="selectWeek"
 			@confirm="calendarChange"
 		></van-calendar>
 		<van-calendar
 			type="multiple"
-			ref="multipleCalender"
-			:minDate="minDate"
-			:maxDate="maxDate"
-			:headerTitle="selectHeadline"
+			v-model="multipleCalender"
+			:min-date="selectMinDate"
+			:max-date="selectMaxDate"
+			:header-title="selectHeadline"
 			:color="selectColor"
-			:defaultDate="selectDefault"
+			:default-date="selectDefault"
 			:round="selectRound"
-			:safeAreaInsetbottom="selectSafeArea"
-			:buttonText="selectBtnText"
-			:buttonAllStyle="selectBtnStyle"
-			:firstDayOfWeek="selectWeek"
+			:safe-area-inset-bottom="selectSafeArea"
+			:button-text="selectBtnText"
+			:button-all-style="selectBtnStyle"
+			:first-day-of-week="selectWeek"
 			@confirm="calendarChange"
 		></van-calendar>
 		<van-calendar
 			type="range"
-			ref="rangeCalender"
-			:minDate="minDate"
-			:maxDate="maxDate"
-			:headerTitle="selectHeadline"
+			v-model="rangeCalender"
+			:min-date="selectMinDate"
+			:max-date="selectMaxDate"
+			:header-title="selectHeadline"
 			:color="selectColor"
-			:defaultDate="selectDefault"
-			:showConfirm="selectConfirm"
+			:default-date="selectDefault"
 			:round="selectRound"
-			:safeAreaInsetbottom="selectSafeArea"
-			:buttonText="selectBtnText"
-			:buttonAllStyle="selectBtnStyle"
-			:firstDayOfWeek="selectWeek"
-			:allowSameDay="selectSame"
-			:maxRange="selectRange"
-			:showRangePrompt="selectPrompt"
+			:safe-area-inset-bottom="selectSafeArea"
+			:button-text="selectBtnText"
+			:button-all-style="selectBtnStyle"
+			:first-day-of-week="selectWeek"
+			:show-confirm="selectConfirm"
+			:allow-same-day="selectSame"
+			:max-range="selectRange"
+			:show-range-prompt="selectPrompt"
 			@confirm="calendarChange"
 		></van-calendar>
 	</view>
@@ -216,6 +216,9 @@
 export default {
 	data() {
 		return {
+			singleCalender: false,
+			multipleCalender: false,
+			rangeCalender: false,
 			stateType: [{ type: 'hidden', mode: '隐藏' }, { type: 'show', mode: '显示' }],
 			selectState: 'hidden',
 			calendarType: [{ type: 'single', mode: '单个日期' }, { type: 'multiple', mode: '多个日期' }, { type: 'range', mode: '日期范围' }],
@@ -224,7 +227,7 @@ export default {
 			selectPostion: 'bottom',
 			headlineType: ['选择日期', '选择时间'],
 			selectHeadline: '选择日期',
-			colorType: [{ type: '', mode: '默认' }, { type: '#FF6027', mode: '红色' }],
+			colorType: [{ type: '', mode: '默认' }, { type: '#20BF98', mode: '红色' }],
 			selectColor: '',
 			sameType: [{ type: false, mode: '否' }, { type: true, mode: '是' }],
 			selectSame: false,
@@ -244,15 +247,15 @@ export default {
 			],
 			selectDefault: null,
 			minDateType: [
-				{ type: new Date(), state: true, mode: '默认' },
-				{ type: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1), state: true, mode: '昨天' }
+				{ type: new Date().getTime(), state: true, mode: '默认' },
+				{ type: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 2).getTime(), state: false, mode: '前天' }
 			],
-			selectMinDate: new Date(),
+			selectMinDate: new Date().getTime(),
 			maxDateType: [
-				{ type: new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()), state: true, mode: '默认' },
-				{ type: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()), state: true, mode: '明年此时' }
+				{ type: new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()).getTime(), state: true, mode: '默认' },
+				{ type: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()).getTime(), state: false, mode: '明年此时' }
 			],
-			selectMaxDate: new Date(),
+			selectMaxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()).getTime(),
 			promptType: [{ type: false, mode: '否' }, { type: true, mode: '是' }],
 			selectPrompt: false,
 			confirmType: [{ type: true, mode: '是' }, { type: false, mode: '否' }],
@@ -273,16 +276,12 @@ export default {
 			selectBtnText: '确定',
 			btnStyleType: [
 				{ type: {}, state: true, mode: '无' },
-				{ type: { color: 'white', height: '80rpx', background: '#FF6027', borderRadius: '8rpx', fontSize: '28rpx' }, state: false, mode: '自定义按钮样式' }
+				{ type: { color: 'white', height: '80rpx', background: '#20BF98', borderRadius: '8rpx', fontSize: '28rpx' }, state: false, mode: '自定义按钮样式' }
 			],
 			selectBtnStyle: {},
 			roundType: [{ type: 18, mode: '默认' }, { type: 0, mode: '无圆角' }],
 			selectRound: 18,
-			minDate: new Date(),
-			maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()),
-			chooseDate: '',
-			maxRange: '',
-			allowSameDay: true
+			chooseDate: ''
 		};
 	},
 	onLoad() {},
@@ -293,14 +292,14 @@ export default {
 		 */
 		chooseState(type) {
 			if (type === 'hidden') {
-				this.$refs[this.selectCalendare + 'Calender'].close();
+				this[this.selectCalendare + 'Calender'] = false;
 			} else {
-				this.$refs[this.selectCalendare + 'Calender'].open();
+				this[this.selectCalendare + 'Calender'] = true;
 			}
 		},
 		calendarChange(e) {
 			this.chooseDate = e.map(el => this.$u.cUtil.dateFormate(el, 'yyyy-MM-dd'));
-			this.$refs[this.selectCalendare + 'Calender'].close();
+			this[this.selectCalendare + 'Calender'] = false;
 		},
 		/**
 		 * 选择日历类型
@@ -431,49 +430,53 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-	padding: 30rpx;
+	padding: $van-margin-lg;
 	.result-div {
-		background-color: #f7f9fb;
-		border: 1rpx dotted #eeeeee;
-		border-radius: 16rpx;
-		padding: 30rpx;
+		background-color: $van-bg-grey;
+		border: 1rpx dotted $van-border-main;
+		border-radius: $van-border-radius-base;
+		padding: $van-margin-base;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
 		.headline {
-			font-size: 30rpx;
-			color: #333333;
+			font-size: $van-font-size-lg;
+			color: $van-text-main;
 			font-weight: bold;
 		}
 		.result-content {
-			font-size: 28rpx;
-			color: #333333;
+			font-size: $van-font-size-base;
+			color: $van-text-main;
+			.result-unit {
+				padding: $van-margin-base;
+			}
 		}
 	}
 	.condition-div {
 		.condition-title {
-			padding: 30rpx 0;
-			font-size: 30rpx;
-			color: #333333;
+			padding: $van-margin-lg $van-margin-base;
+			font-size: $van-font-size-lg;
+			color: $van-text-main;
 			font-weight: bold;
 		}
 		.condition-content {
-			background-color: #f7f8fa;
-			border-radius: 8rpx;
-			padding: 10rpx;
+			background-color: $van-bg-grey;
+			border-radius: $van-border-radius-sm;
+			padding: $van-margin-sm;
+			margin: $van-margin-base;
 			display: flex;
 			justify-content: space-between;
 			.condition-unit {
 				width: 100%;
-				padding: 0 30rpx;
-				font-size: 28rpx;
-				color: #333333;
-				border-radius: 8rpx;
+				padding: 0 $van-margin-lg;
+				font-size: $van-font-size-base;
+				color: $van-text-main;
+				border-radius: $van-border-radius-sm;
 				text-align: center;
 			}
 			.select-unit {
-				background-color: #ffffff;
+				background-color: $van-bg-content;
 			}
 		}
 	}

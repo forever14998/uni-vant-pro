@@ -177,8 +177,7 @@ export default {
 			selectStyle: {},
 			overlayStyleType: [
 				{ type: {}, state: true, mode: '默认' },
-				{ type: { 'background-color': 'rgba(255, 255,255, 0.7)',
-				'background-color': 'var(--overlay-background-color, rgba(255, 255,255, 0.7))', }, state: false, mode: '自定义样式' }
+				{ type: { 'background-color': 'rgba(255, 255,255, 0.7)' }, state: false, mode: '自定义样式' }
 			],
 			selectOverlayStyle: {},
 			closeType: [{ type: true, mode: '是' }, { type: false, mode: '否' }],
@@ -292,35 +291,36 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-	padding: 30rpx;
+	padding: $van-margin-lg;
 	.overlay-content {
 		height: 200rpx;
 		width: 200rpx;
-		background-color: #ffffff;
+		background-color: $van-bg-content;
 	}
 	.condition-div {
 		.condition-title {
-			padding: 30rpx 0;
-			font-size: 30rpx;
-			color: #333333;
+			padding: $van-margin-lg $van-margin-base;
+			font-size: $van-font-size-lg;
+			color: $van-text-main;
 			font-weight: bold;
 		}
 		.condition-content {
-			background-color: #f7f8fa;
-			border-radius: 8rpx;
-			padding: 10rpx;
+			background-color: $van-bg-grey;
+			border-radius: $van-border-radius-sm;
+			padding: $van-margin-sm;
+			margin: $van-margin-base;
 			display: flex;
 			justify-content: space-between;
 			.condition-unit {
 				width: 100%;
-				padding: 0 30rpx;
-				font-size: 28rpx;
-				color: #333333;
-				border-radius: 8rpx;
+				padding: 0 $van-margin-lg;
+				font-size: $van-font-size-base;
+				color: $van-text-main;
+				border-radius: $van-border-radius-sm;
 				text-align: center;
 			}
 			.select-unit {
-				background-color: #ffffff;
+				background-color: $van-bg-content;
 			}
 		}
 	}

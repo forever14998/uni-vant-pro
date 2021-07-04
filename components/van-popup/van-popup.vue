@@ -14,6 +14,23 @@
 </template>
 
 <script>
+/**
+ * @property {Boolean} value 是否显示组件
+ * @property {Number} duration 动画时长，单位毫秒
+ * @property {Boolean} round 是否显示圆角
+ * @property {Boolean} closeable 是否显示关闭图标
+ * @property {Object} custom-style 自定义内容样式
+ * @property {Object} overlay-style 自定义遮罩样式
+ * @property {String} transition 动画类名，等价于 transtion 的name属性
+ * @property {Number} z-index z-index 层级
+ * @property {Boolean} overlay 是否显示遮罩层
+ * @property {String} close-icon-position 关闭图标位置，可选值为top-left|bottom-left|bottom-right
+ * @property {Boolean} close-on-click-overlay 是否在点击遮罩层后关闭
+ * @property {String} position 弹出位置，可选值为 top|bottom|right|left|center
+ * @property {Boolean} safe-area-inset-bottom 是否开启底部安全区适配
+ * @event {Function} close 关闭弹出层时触发
+ * @event {Function} close-overlay 点击遮罩层时触发
+ */
 const getClassNames = name => ({
 	enter: `van-${name}-enter van-${name}-enter-active`,
 	'enter-to': `van-${name}-enter-to van-${name}-enter-active`,
@@ -52,10 +69,6 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		closeIcon: {
-			type: String,
-			default: 'cross'
-		},
 		closeIconPosition: {
 			type: String,
 			default: 'top-right'
@@ -72,10 +85,6 @@ export default {
 		safeAreaInsetBottom: {
 			type: Boolean,
 			default: true
-		},
-		safeAreaInsetTop: {
-			type: Boolean,
-			default: false
 		}
 	},
 
@@ -117,7 +126,8 @@ export default {
 			]);
 		},
 		getClasses() {
-			let info = this.$u.memoize.memoize(this.$u.bem.bem)('popup', [this.position, { round: this.round, safe: this.safeAreaInsetBottom, safeTop: this.safeAreaInsetTop }]);
+			// safeTop: this.safeAreaInsetTop
+			let info = this.$u.memoize.memoize(this.$u.bem.bem)('popup', [this.position, { round: this.round, safe: this.safeAreaInsetBottom }]);
 			let classes = Array.isArray(this.classes)? this.classes.join(' '):this.classes
 			return `${info} ${classes}`;
 		},
