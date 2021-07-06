@@ -2,7 +2,7 @@
 	<view class="van_index__page">
 		<view class="van_top__introduce">
 			<view class="van_title__div">
-				<view class="van_logo"></view>
+				<image src="../../libs/image/logo.png" class="van_logo"></image>
 				<view class="van_index__title">Vant Pro</view>
 			</view>
 			<view class="van_index__headline">轻量、可靠的移动端 Vue 组件库</view>
@@ -63,7 +63,8 @@ export default {
 			.van_logo {
 				width: $van-image-base;
 				height: $van-image-base;
-				background-color: $van-color-main;
+				position: relative;
+				top: 20rpx;
 			}
 			.van_index__title {
 				font-size: $van-font-size-title;
