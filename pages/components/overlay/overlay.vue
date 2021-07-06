@@ -57,7 +57,7 @@ export default {
 			selectDuration: 300,
 			styleType: [
 				{ type: {}, state: true, mode: '默认' },
-				{ type: { display: 'flex', 'justify-content': 'center', 'align-items': 'center' }, state: false, mode: '自定义样式' }
+				{ type: { display: 'flex', 'justify-content': 'center', 'align-items': 'center', 'padding-top': '400rpx' }, state: false, mode: '自定义样式' }
 			],
 			selectStyle: {}
 		};

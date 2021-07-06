@@ -15,7 +15,7 @@
 					@leave="leave"
 					@after-leave="afterLeave"
 				>
-					<view class="transition-content">vant</view>
+					<view class="transition-content"></view>
 				</van-transition>
 			</view>
 		</view>
@@ -87,7 +87,7 @@ export default {
 			selectAnimation: 'fade',
 			durationType: [{ type: 300, mode: '默认' }, { type: 1000, mode: '1000' }],
 			selectDuration: 300,
-			styleType: [{ type: {}, state: true, mode: '默认' }, { type: { color: '#ffffff', 'font-size': '30rpx', 'font-weight': 'bold' }, state: false, mode: '自定义样式' }],
+			styleType: [{ type: {}, state: true, mode: '默认' }, { type: { borderRadius: '18rpx', overflow: 'hidden',display: 'flex' }, state: false, mode: '自定义样式' }],
 			selectStyle: {}
 		};
 	},

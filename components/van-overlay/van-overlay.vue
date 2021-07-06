@@ -29,7 +29,7 @@ export default {
 			type: Number,
 			default: 1
 		},
-		// 自定义样式
+		// 自定义样式(加在van-transition,使用可参考transition动画中的customStyle)
 		customStyle: {
 			type: Object,
 			default: () => {}
