@@ -1,0 +1,58 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "vant-pro"
+			}
+		}
+	    ,{
+            "path" : "pages/components/transition/transition",
+            "style" :
+            {
+                "navigationBarTitleText": "transition",
+                "enablePullDownRefresh": false
+            }
+
+        }
+        ,{
+            "path" : "pages/components/overlay/overlay",
+            "style" :
+            {
+                "navigationBarTitleText": "overlay",
+                "enablePullDownRefresh": false
+            }
+
+        }
+        ,{
+            "path" : "pages/components/popup/popup",
+            "style" :
+            {
+                "navigationBarTitleText": "popup",
+                "enablePullDownRefresh": false
+            }
+
+        }
+        ,{
+            "path" : "pages/components/calendar/calendar",
+            "style" :
+            {
+                "navigationBarTitleText": "calendar",
+                "enablePullDownRefresh": false
+            }
+
+        }
+    ],
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^van-(.*)": "@/components/van-$1/van-$1.vue"
+		}
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
