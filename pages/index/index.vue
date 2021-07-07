@@ -2,9 +2,9 @@
 	<view class="van_index__page">
 		<view class="van_top__introduce">
 			<view class="van_title__div">
-				<image src="../../libs/image/logo.png" class="van_logo"></image>
+				<image :src="logoImage" class="van_logo"></image>
 				<view class="van_index__title">Vant Pro</view>
-			</view>
+			</view> 
 			<view class="van_index__headline">轻量、可靠的移动端 Vue 组件库</view>
 		</view>
 		<view class="van_index__card">
@@ -39,7 +39,9 @@
 <script>
 export default {
 	data() {
-		return {};
+		return {
+			logoImage : 'http://qvuuwrm1h.hn-bkt.clouddn.com/vant-logo.jpg'
+		};
 	},
 	onLoad() {},
 	methods: {
