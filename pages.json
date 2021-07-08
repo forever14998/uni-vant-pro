@@ -46,7 +46,7 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			"^van-(.*)": "@/components/van-$1/van-$1.vue"
+			"^van-(.*)": "@/vant-pro/components/van-$1/van-$1.vue"
 		}
 	},
 	"globalStyle": {

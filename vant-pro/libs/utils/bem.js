@@ -1,5 +1,5 @@
-import {isArray} from '@/libs/utils/validator.js'
-import * as object from '@/libs/utils/object.js'
+import {isArray} from './validator.js'
+import * as object from './object.js'
 var PREFIX = 'van-';
 
 function join(name, mods) {

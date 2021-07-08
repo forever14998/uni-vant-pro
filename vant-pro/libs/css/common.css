@@ -81,10 +81,3 @@
 .van-hairline--surround:after {
   border-width: 1px
 }
-* {
-	scrollbar-width: none;
-	-ms-overflow-style: none;
-}
-::-webkit-scrollbar{
-	display: none;
-}

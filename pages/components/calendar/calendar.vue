@@ -47,109 +47,12 @@
 		<view class="condition-div">
 			<view class="condition-title">圆角</view>
 			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': selectRound === item.type }" v-for="(item, index) in roundType" :key="index" @click="chooseRound(item.type)">
+				<view class="condition-unit" :class="{ 'select-unit': selectRound === item.type }" v-for="(item, index) in 
+				roundType" :key="index" @click="chooseRound(item.type)">
 					{{ item.mode }}
 				</view>
 			</view>
 		</view>
-		<view class="condition-div">
-			<view class="condition-title">起始日期是否可相同</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': selectSame === item.type }" v-for="(item, index) in sameType" :key="index" @click="chooseSame(item.type)">
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<!-- <view class="condition-div">
-			<view class="condition-title">可选日期最大跨度</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': selectRange === item.type }" v-for="(item, index) in rangeType" :key="index" @click="chooseRange(item.type)">
-					{{ item.mode }}
-				</view>
-			</view>
-		</view> -->
-		<!-- 	<view class="condition-div">
-			<view class="condition-title">超过可选范围是否提示</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectPrompt === item.type }"
-					v-for="(item, index) in promptType"
-					:key="index"
-					@click="choosePrompt(item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view> -->
-		<view class="condition-div">
-			<view class="condition-title">默认日期</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': item.state }" v-for="(item, index) in defaultType" :key="index" @click="chooseDefault(item)">
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">最小可选日期</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': item.state }" v-for="(item, index) in minDateType" :key="index" @click="chooseMinDate(item)">
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">最大可选日期</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': item.state }" v-for="(item, index) in maxDateType" :key="index" @click="chooseMaxDate(item)">
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<!-- <view class="condition-div">
-			<view class="condition-title">是否展示确认按钮</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectConfirm === item.type }"
-					v-for="(item, index) in confirmType"
-					:key="index"
-					@click="chooseConfirm(item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view> -->
-		<!-- <view class="condition-div">
-			<view class="condition-title">第一列显示周几</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': selectWeek === item.type }" v-for="(item, index) in weekType" :key="index" @click="chooseWeek(item.type)">
-					{{ item.mode }}
-				</view>
-			</view>
-		</view> -->
-		<view class="condition-div">
-			<view class="condition-title">是否适配ios底部安全区域</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectSafeArea === item.type }"
-					v-for="(item, index) in safeAreaType"
-					:key="index"
-					@click="chooseSafeArea(item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<!-- <view class="condition-div">
-			<view class="condition-title">按钮文案</view>
-			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': selectBtnText === item }" v-for="(item, index) in btnTextType" :key="index" @click="chooseBtnText(item)">
-					{{ item }}
-				</view>
-			</view>
-		</view> -->
 		<view class="condition-div">
 			<view class="condition-title">自定义按钮样式</view>
 			<view class="condition-content">
@@ -158,56 +61,40 @@
 				</view>
 			</view>
 		</view>
-		<!-- formatter -->
-		<!-- :position="selectPostion" -->
 		<van-calendar
 			type="single"
 			v-model="singleCalender"
-			:min-date="selectMinDate"
-			:max-date="selectMaxDate"
+			:minDate="minDate"
+			:defaultDate="defaultDate"
 			:header-title="selectHeadline"
 			:color="selectColor"
-			:default-date="selectDefault"
 			:round="selectRound"
-			:safe-area-inset-bottom="selectSafeArea"
 			:button-text="selectBtnText"
 			:button-all-style="selectBtnStyle"
-			:first-day-of-week="selectWeek"
 			@confirm="calendarChange"
+			@close="closeCalendar"
 		></van-calendar>
 		<van-calendar
 			type="multiple"
 			v-model="multipleCalender"
-			:min-date="selectMinDate"
-			:max-date="selectMaxDate"
 			:header-title="selectHeadline"
 			:color="selectColor"
-			:default-date="selectDefault"
 			:round="selectRound"
-			:safe-area-inset-bottom="selectSafeArea"
 			:button-text="selectBtnText"
 			:button-all-style="selectBtnStyle"
-			:first-day-of-week="selectWeek"
 			@confirm="calendarChange"
+			@close="closeCalendar"
 		></van-calendar>
 		<van-calendar
 			type="range"
 			v-model="rangeCalender"
-			:min-date="selectMinDate"
-			:max-date="selectMaxDate"
 			:header-title="selectHeadline"
 			:color="selectColor"
-			:default-date="selectDefault"
 			:round="selectRound"
-			:safe-area-inset-bottom="selectSafeArea"
 			:button-text="selectBtnText"
 			:button-all-style="selectBtnStyle"
-			:first-day-of-week="selectWeek"
-			:show-confirm="selectConfirm"
-			:allow-same-day="selectSame"
-			:max-range="selectRange"
-			:show-range-prompt="selectPrompt"
 			@confirm="calendarChange"
+			@close="closeCalendar"
 		></van-calendar>
 	</view>
 </template>
@@ -223,55 +110,10 @@ export default {
 			selectState: 'hidden',
 			calendarType: [{ type: 'single', mode: '单个日期' }, { type: 'multiple', mode: '多个日期' }, { type: 'range', mode: '日期范围' }],
 			selectCalendare: 'single',
-			postionType: [{ type: 'left', mode: '左' }, { type: 'right', mode: '右' }, { type: 'top', mode: '上' }, { type: 'bottom', mode: '下' }, { type: 'center', mode: '中' }],
-			selectPostion: 'bottom',
 			headlineType: ['选择日期', '选择时间'],
 			selectHeadline: '选择日期',
-			colorType: [{ type: '', mode: '默认' }, { type: '#20BF98', mode: '红色' }],
+			colorType: [{ type: '', mode: '默认' }, { type: '#20BF98', mode: '绿色' }],
 			selectColor: '',
-			sameType: [{ type: false, mode: '否' }, { type: true, mode: '是' }],
-			selectSame: false,
-			rangeType: [{ type: null, mode: '无' }, { type: 10, mode: '10' }, { type: 20, mode: '20' }],
-			selectRange: null,
-			defaultType: [
-				{ type: null, state: true, mode: '默认' },
-				{ type: [new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 3)], state: false, mode: '单个时间' },
-				{
-					type: [
-						new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
-						new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 4)
-					],
-					state: false,
-					mode: '多个时间'
-				}
-			],
-			selectDefault: null,
-			minDateType: [
-				{ type: new Date().getTime(), state: true, mode: '默认' },
-				{ type: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 2).getTime(), state: false, mode: '前天' }
-			],
-			selectMinDate: new Date().getTime(),
-			maxDateType: [
-				{ type: new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()).getTime(), state: true, mode: '默认' },
-				{ type: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()).getTime(), state: false, mode: '明年此时' }
-			],
-			selectMaxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()).getTime(),
-			promptType: [{ type: false, mode: '否' }, { type: true, mode: '是' }],
-			selectPrompt: false,
-			confirmType: [{ type: true, mode: '是' }, { type: false, mode: '否' }],
-			selectConfirm: true,
-			weekType: [
-				{ type: 0, mode: '日' },
-				{ type: 1, mode: '一' },
-				{ type: 2, mode: '二' },
-				{ type: 3, mode: '三' },
-				{ type: 4, mode: '四' },
-				{ type: 5, mode: '五' },
-				{ type: 6, mode: '六' }
-			],
-			selectWeek: 0,
-			safeAreaType: [{ type: true, mode: '是' }, { type: false, mode: '否' }],
-			selectSafeArea: true,
 			btnTextType: ['确定', '选择'],
 			selectBtnText: '确定',
 			btnStyleType: [
@@ -279,9 +121,11 @@ export default {
 				{ type: { color: 'white', height: '80rpx', background: '#20BF98', borderRadius: '8rpx', fontSize: '28rpx' }, state: false, mode: '自定义按钮样式' }
 			],
 			selectBtnStyle: {},
-			roundType: [{ type: 18, mode: '默认' }, { type: 0, mode: '无圆角' }],
-			selectRound: 18,
-			chooseDate: ''
+			roundType: [{ type: false, mode: '默认' }, { type: true, mode: '圆角' }],
+			selectRound: false,
+			chooseDate: '',
+			minDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-30).getTime(),
+			defaultDate: new Date(new Date().getFullYear(), new Date().getMonth()+4, new Date().getDate()).getTime()
 		};
 	},
 	onLoad() {},
@@ -297,6 +141,16 @@ export default {
 				this[this.selectCalendare + 'Calender'] = true;
 			}
 		},
+		/**
+		 * 关闭组件
+		 */
+		closeCalendar() {
+			this[this.selectCalendare + 'Calender'] = false;
+		},
+		/**
+		 * @param {Object} e
+		 * 选择时间
+		 */
 		calendarChange(e) {
 			this.chooseDate = e.map(el => this.$u.cUtil.dateFormate(el, 'yyyy-MM-dd'));
 			this[this.selectCalendare + 'Calender'] = false;
@@ -306,13 +160,6 @@ export default {
 		 */
 		chooseCalendar(type) {
 			this.selectCalendare = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 选择弹出方向
-		 */
-		choosePostion(type) {
-			this.selectPostion = type;
 		},
 		/**
 		 * @param {Object} item
@@ -334,78 +181,6 @@ export default {
 		 */
 		chooseRound(type) {
 			this.selectRound = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 开始日期和结束日期是否可以使同一天
-		 */
-		chooseSame(type) {
-			this.selectSame = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 日期范围的最大跨度
-		 */
-		chooseRange(type) {
-			this.selectRange = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 超过所选日期范围是否会提示
-		 */
-		choosePrompt(type) {
-			this.selectPrompt = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 默认选中日期
-		 */
-		chooseDefault(item) {
-			let info = this.defaultType.filter(el => el.state);
-			this.$set(info[0], 'state', false);
-			this.$set(item, 'state', true);
-			this.selectDefault = item.type;
-		},
-		/**
-		 * @param {Object} type
-		 * 最小日期
-		 */
-		chooseMinDate(item) {
-			let info = this.minDateType.filter(el => el.state);
-			this.$set(info[0], 'state', false);
-			this.$set(item, 'state', true);
-			this.selectMinDate = item.type;
-		},
-		/**
-		 * @param {Object} type
-		 * 最大日起日期
-		 */
-		chooseMaxDate(item) {
-			let info = this.maxDateType.filter(el => el.state);
-			this.$set(info[0], 'state', false);
-			this.$set(item, 'state', true);
-			this.selectMaxDate = item.type;
-		},
-		/**
-		 * @param {Object} type
-		 * 是否展示确认按钮
-		 */
-		chooseConfirm(type) {
-			this.selectConfirm = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 第一列显示周几
-		 */
-		chooseWeek(type) {
-			this.selectWeek = type;
-		},
-		/**
-		 * @param {Object} type
-		 * 是否适配ios底部安全区域
-		 */
-		chooseSafeArea(type) {
-			this.selectSafeArea = type;
 		},
 		/**
 		 * @param {Object} type

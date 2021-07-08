@@ -1,13 +1,6 @@
 <template>
 	<view>
-		<van-popup
-			v-model="popupShow"
-			:position="position"
-			:border-radius="round"
-			:close-on-click-overlay="closeOnClick"
-			:safe-area-inset-bottom="safeAreaInsetBottom"
-			@close="close()"
-		>
+		<van-popup v-model="value" :position="position" :round="round" :close-on-click-overlay="closeOnClick" :safe-area-inset-bottom="safeAreaInsetBottom" @close="close()">
 			<view class="van-calendar__view">
 				<view class="van-calendar__header__border">
 					<view class="van-calendar_top_headline" :style="[headerStyle]">
@@ -19,9 +12,9 @@
 						<view v-for="(weekdaysItem, weekdaysIndex) in weekdays" :key="weekdaysIndex" class="van-calendar__weekday">{{ weekdaysItem }}</view>
 					</view>
 				</view>
-
-				<scroll-view scroll-y="true" class="scroll-Y">
-					<view class="" v-for="(allDayItem, allDayIndex) in allDayList" :key="allDayIndex">
+				
+				<scroll-view  scroll-y="true" :scroll-into-view="scrollIntoView">
+					<view :id="`month${allDayIndex}`" v-for="(allDayItem, allDayIndex) in allDayList" :key="allDayIndex">
 						<view class="van-calendar__month">
 							<view class="van-calendar__month-title">{{ formatMonthTitle(allDayItem) }}</view>
 
@@ -74,7 +67,7 @@
  * @property {Number| String} max-range 可选日期的最大跨度（只在type是range时有效）
  * @property {Boolean} show-range-prompt 当选择范围超过跨度时是否弹出提示(只在type是range时有效)
  * @property {Boolean} show-onfirm 是否展示确认按钮（只在type是range时有效）
- * @property {Number| String} round 圆角
+ * @property {Boolean} round 圆角
  * @property {Boolean} safe-area-inset-bottom 是否需要适配ios底部安全区域
  * @property {String} button-text 按钮文案
  * @property {Object} button-all-style 自定义按钮样式
@@ -124,10 +117,7 @@ export default {
 		},
 		// 默认选中日期
 		defaultDate: {
-			type: null,
-			observer(val) {
-				this.currentDate = val;
-			}
+			type: null
 		},
 		// 日期格式化函数
 		formatter: {
@@ -155,8 +145,8 @@ export default {
 		},
 		// 圆角，组件圆角
 		round: {
-			type: [Number, String],
-			default: 18
+			type: Boolean,
+			default: false
 		},
 		// 是否需要适配ios底部安全区域
 		safeAreaInsetBottom: {
@@ -189,21 +179,24 @@ export default {
 				height: '70rpx',
 				borderRadius: '40rpx'
 			},
-			popupShow: false,
-			position: 'bottom'
+			position: 'bottom',
+			scrollIntoView: ''
 		};
 	},
 	watch: {
 		value: function(val) {
 			if (val) {
-				this.open();
-			} else {
-				this.close();
+				this.scrollToView();
 			}
+		},
+		defaultDate: function(val) {
+			this.scrollToView();
+			this.currentDate = val;
 		}
 	},
 	mounted() {
-		this.value && this.open();
+		this.open();
+		this.defaultDate && this.scrollToView();
 	},
 	computed: {
 		getDaysByComputed(item) {
@@ -219,16 +212,32 @@ export default {
 		},
 		// 按钮自定义class
 		buttonStyle() {
-			return Object.assign(this.defaultButtonStyle, { backgroundColor: this.color }, this.buttonAllStyle);
+			return { ...this.defaultButtonStyle, backgroundColor: this.color, ...this.buttonAllStyle };
 		}
 	},
 	methods: {
+		scrollToView() {
+			setTimeout(() => {
+				const targetDate = this.type === 'single' ? this.currentDate : this.currentDate[0];
+				const displayed = this.value;
+				if (!targetDate || !this.value) {
+					return;
+				}
+				const months = this.$u.cUtil.getMonths(this.minDate, this.maxDate);
+				months.some((month, index) => {
+					if (this.$u.cUtil.compareMonth(month, targetDate) === 0) {
+						this.scrollIntoView = `month${index}`;
+						return true;
+					}
+					return false;
+				});
+			}, 200);
+		},
 		open() {
-			this.popupShow = true;
 			this.initCalender();
 		},
 		close() {
-			this.popupShow = false;
+			this.$emit('close');
 		},
 		initCalender() {
 			this.initWeekDay();
@@ -476,10 +485,10 @@ export default {
 				return [startDay || this.minDate, endDay || this.$u.cUtil.getNextDay(new Date(this.minDate)).getTime()];
 			}
 			if (this.type === 'multiple') {
-				return this.defaultDate || [this.$u.cUtil.getNextDay(new Date(this.minDate))];
+				return this.defaultDate || [this.minDate];
 			}
 
-			return this.defaultDate || this.$u.cUtil.getNextDay(new Date(this.minDate));
+			return this.defaultDate || this.minDate;
 		}
 	}
 	// created() {
@@ -612,7 +621,7 @@ scroll-view {
 	transform: translate(-50%, -50%);
 	pointer-events: none;
 	color: rgba(242, 243, 245, 0.8);
-	font-size: $van-font-size-lg;
+	font-size: 450rpx;
 }
 
 .van-calendar__day,

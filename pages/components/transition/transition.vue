@@ -87,7 +87,7 @@ export default {
 			selectAnimation: 'fade',
 			durationType: [{ type: 300, mode: '默认' }, { type: 1000, mode: '1000' }],
 			selectDuration: 300,
-			styleType: [{ type: {}, state: true, mode: '默认' }, { type: { borderRadius: '18rpx', overflow: 'hidden',display: 'flex' }, state: false, mode: '自定义样式' }],
+			styleType: [{ type: {}, state: true, mode: '默认' }, { type: { borderRadius: '18rpx', overflow: 'hidden', display: 'flex' }, state: false, mode: '自定义样式' }],
 			selectStyle: {}
 		};
 	},
@@ -121,8 +121,43 @@ export default {
 			this.$set(this.styleType.filter(el => el.state)[0], 'state', false);
 			this.$set(item, 'state', true);
 			this.selectStyle = item.type;
+		},
+		/**
+		 * 进入前
+		 */
+		beforeEnter() {
+			console.log('进入前');
+		},
+		/**
+		 * 进入中
+		 */
+		enter() {
+			console.log('进入中');
+		},
+		/**
+		 * 进入后
+		 */
+		afterEnter() {
+			console.log('进入后');
+		},
+		/**
+		 * 离开前
+		 */
+		beforeLeave() {
+			console.log('离开前');
+		},
+		/**
+		 * 离开
+		 */
+		leave() {
+			console.log('离开中');
+		},
+		/**
+		 * 离开后
+		 */
+		afterLeave() {
+			console.log('离开后');
 		}
-
 	}
 };
 </script>
