@@ -11,6 +11,5 @@
 
 <style>
 	/*每个页面公共css */
-	@import '@/vant-pro/libs/css/icon.css';
-	@import '@/vant-pro/libs/css/common.css';
+	@import '@/vant-pro/index.css';
 </style>
