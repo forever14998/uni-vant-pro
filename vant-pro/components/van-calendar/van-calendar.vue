@@ -45,7 +45,7 @@
 						</view>
 					</view>
 				</scroll-view>
-				<view class="van-calendar__footer " :class="safeAreaInsetBottom ? 'safe-area-inset-bottom' : ''" @click="onConfirm()" v-if="!(type === 'range' && !showConfirm)">
+				<view class="van-calendar__footer " :class="safeAreaInsetBottom ? 'safe-area-inset-bottom' : ''" @click="onConfirm()" v-if="(type === 'multiple') || showConfirm">
 					<view class="van-calendar__footer_button" hover-class="van-calendar__footer_button_hover" :style="[buttonStyle]">{{ buttonText }}</view>
 				</view>
 			</view>
@@ -55,7 +55,7 @@
 
 <script>
 /**
- * @property {String} type 弹出方式 left|right|top|bottom|center
+ * @property {String} type 选择类型 single|multiple|range
  * @property {String} header-title 组件标题
  * @property {String} color 选中日期以及组件按钮颜色
  * @property {Boolean} close-on-click 是否允许点击遮罩层关闭
@@ -66,7 +66,7 @@
  * @property {Boolean} allow-same-day 是否允许开始日期和结束日期是同一天（只在type是range时有效）
  * @property {Number| String} max-range 可选日期的最大跨度（只在type是range时有效）
  * @property {Boolean} show-range-prompt 当选择范围超过跨度时是否弹出提示(只在type是range时有效)
- * @property {Boolean} show-onfirm 是否展示确认按钮（只在type是range时有效）
+ * @property {Boolean} show-onfirm 是否展示确认按钮（只在type是range|single时有效）
  * @property {Boolean} round 圆角
  * @property {Boolean} safe-area-inset-bottom 是否需要适配ios底部安全区域
  * @property {String} button-text 按钮文案
@@ -90,7 +90,7 @@ export default {
 		 */
 		type: {
 			type: String,
-			default: 'range'
+			default: 'single'
 		},
 		// 组件标题
 		headerTitle: {
@@ -109,10 +109,12 @@ export default {
 		},
 		// 可选择的最小日期，默认是当前日期
 		minDate: {
+			type: null,
 			default: () => new Date().getTime()
 		},
 		// 可选择的最大日期，默认是距离今天6个月后的日期
 		maxDate: {
+			type: null,
 			default: () => new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate()).getTime()
 		},
 		// 默认选中日期
@@ -136,9 +138,9 @@ export default {
 		// 当选择范围超过跨度时是否弹出提示(只在type是range时有效)
 		showRangePrompt: {
 			type: Boolean,
-			default: false
+			default: true
 		},
-		// 是否展示确认按钮。（只在type是range时有效）
+		// 是否展示确认按钮。（只在type是range|single时有效）
 		showConfirm: {
 			type: Boolean,
 			default: true
@@ -424,10 +426,24 @@ export default {
 			}
 		},
 		onConfirm() {
-			if (this.type === 'range' && !this.checkRange(this.currentDate)) {
-				return;
+			if (this.type === 'range') {
+				let rangeDateList = this.currentDate.filter(el=> !this.$u.utils.isEmpty(el))
+				if (this.$u.utils.isEmpty(this.currentDate[0])) {
+					uni.showToast({
+						title: `请选择开始日期`,
+						icon: 'none'
+					});
+					return
+				} else if (this.$u.utils.isEmpty(this.currentDate[1])) {
+					uni.showToast({
+						title: `请选择结束日期`,
+						icon: 'none'
+					});
+					return
+				} else if (!this.checkRange(this.currentDate)) {
+					return
+				};
 			}
-
 			this.$emit('confirm', this.getSelectDateResult());
 		},
 		getSelectDateResult() {
@@ -440,7 +456,7 @@ export default {
 		},
 		onClickDay(item) {
 			// #ifdef MP-WEIXIN
-			item = item.$orig;
+			// item = item.$orig;
 			// #endif
 
 			if (item.type === 'disabled') return;

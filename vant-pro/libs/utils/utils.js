@@ -3,3 +3,6 @@ export function requestAnimationFrame(cb) {
     cb();
   }, 1000 / 30);
 }
+export const isEmpty = (str) => {
+	return (str === null || str === undefined || str === 'null' || str === 'undefined' || str === '');
+}
