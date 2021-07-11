@@ -1,97 +1,135 @@
-# 快速上手
-## 前言
-[vant ](https://github.com/youzan/vant)  是**有赞前端团队**开源的移动端组件库，vant 拥有的用户体量是非常庞大的，但没有多端适配版本。 
-
-uni-app 社区内，只有对 vant 单端兼容的版本，UniVantPro 由此而发布。为了更好的适配开发者的开发习惯，拥抱庞大的开发社区和生态，现将 vant 优化 并逐步迁移至 uni-app 内，实现多端适配。
+<center><img src="https://static-7896494f-63ee-4a91-a07c-1fcd1d73002f.bspapp.com/assets/logo.png"></img> </center>
+<center><font face="黑体" size=8>vantPro</font></center>
+<center><font  size=4>基于 vant 多端适配版本</font></center>
 
 ## 介绍
-通过本章节你可以了解到 VantPro 的安装方法和基本使用姿势。
 
-## 插件
-通过 插件市场 安装
-uni-app 插件市场 搜索 vantPro 。右上角 使用Hx 导入插件 或者 下载插件ZIP。
-请将插件包放置在项目定义的组件文件夹。
 
+uni-app 社区内，只有对 vant 单端兼容的版本，vantPro 由此而发布。为了更好的适配开发者的开发习惯，拥抱庞大的开发社区和生态。   
+vantPro 多端适配版本发布，现支持 日期选择、弹出、动画组件。
 ​
 
-下载地址：  
-[https://ext.dcloud.net.cn/plugin?id=1593](https://ext.dcloud.net.cn/plugin?id=1593)
+##  文档
 
 
-## 示例
-我们提供了丰富的示例工程，通过示例工程你可以了解如下内容：
-
-- 框架如何使用
-- 配置自定义主题色
-- 各组件的使用示例
-
-下载地址：  
-[https://ext.dcloud.net.cn/plugin?id=1593](https://ext.dcloud.net.cn/plugin?id=1593)  
-[https://github.com/forever14998/uni-vant-pro](https://github.com/forever14998/uni-vant-pro)
+### [文档地址：http://vantpro.com](https://static-7896494f-63ee-4a91-a07c-1fcd1d73002f.bspapp.com/)
 
 
-## 组件引入
-### 全局引入（[easycom](https://uniapp.dcloud.io/collocation/pages?id=easycom)）
+##  预览
 
 
-自 uniapp 3.1.1 后 新增 easycom 方式 引入 组件，使用方式：page.json 中编写如下代码：
+<center>
+<img src="https://static-7896494f-63ee-4a91-a07c-1fcd1d73002f.bspapp.com/assets/h5logo.png" width="300"></img> 
+<span style="display: inline-block; width: 240px"></span>
+<img src="https://static-7896494f-63ee-4a91-a07c-1fcd1d73002f.bspapp.com/assets/img/wx-logo.b60e91fb.jpg" width="300"></img> 
+</center>
+
+
+##  使用
+
+
+> 在使用此组件前，假设您已经安装了 scss 依赖，hx 版本 版本为3.0以上，支持 easycom 规则 引入组件。
+
+1. main.js 引入
 ```javascript
-"easycom": {
-    "autoscan": true,
-        "custom": {
-        "^van-(.*)": "@/uniVantPro/components/van-$1/van-$1.vue"
-    }
-}
+import vantPro from 'vant-pro' 
+Vue.use(vantPro)
 ```
+
+2. App.vue 引入 样式。
+```css
+<style>
+	/*每个页面公共css */
+	@import '@/vant-pro/index.css';
+</style>
+```
+
+3. uni.scss引入全局scss文件
+```css
+@import '@/vant-pro/theme.scss';
+```
+
+4. pages.json 依据 easycom 规则 全局引入 组件
+```javascript
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^van-(.*)": "@/vant-pro/components/van-$1/van-$1.vue"
+		}
+	}
+```
+
+
+##  示例
+
+
+
 如不出意外的话，引入后您将直接在页面中 使用组件即可，例子如下：
 
 
-```vue
+```html
 <template>
-  <van-popup>
-    <view class="overlay-content"></view>
-  </van-popup>
-</template>
-
-<style lang="scss" scoped>
-.overlay-content {
-  height: 200rpx;
-  width: 200rpx;
-  background-color: #3f8cf4;
-}
-</style>
-```
-
-
-### 单组件引入
-与 vue 引入的方法无异，示例如下：
-```vue
-<template>
-  <van-popup>
-    <view class="overlay-content"></view>
-  </van-popup>
+	<view>
+		<button  @click="calendarShow = true" >选择日期区间</button>
+		<van-calendar v-model="calendarShow" @confirm="onConfirm" />
+	</view>
 </template>
 
 <script>
-import vanPopup from "@/uniVantPro/components/van-popup/van-popup.vue";
 export default {
-  components: {
-    vanPopup
-  },
-  data() {
-  }
-}
+	data() {
+		return {
+			calendarShow: false
+		};
+	},
+	onLoad() {},
+	methods: {
+		/**
+		 * 选择日期回调
+		 * @param {Object} result
+		 */
+		onConfirm(result){
+			// 解析结果
+			console.log(result.map(el => this.$u.cUtil.dateFormate(el, 'yyyy-MM-dd')));
+			// 关闭组件
+			this.calendarShow = false;
+		}
+	}
+};
 </script>
-
-<style lang="scss" scoped>
-.overlay-content {
-  height: 200rpx;
-  width: 200rpx;
-  background-color: #3f8cf4;
-}
-</style>
+......
 ```
-### ​
+##  联系我们
+QQ: 1019011560、   2737469470   
+mail: forever14998@gmail.com
+
+
+##  鸣谢
+
+[vant](https://github.com/youzan/vant)    官方提供的基础组件   
+[uView](https://www.uviewui.com/) 多平台快速开发的UI框架
+
+​
+
 
 ## 版权信息
+
 遵循MIT开源协议，全面拥抱开源。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
