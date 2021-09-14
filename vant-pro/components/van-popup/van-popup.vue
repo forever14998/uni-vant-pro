@@ -3,12 +3,13 @@
 		<van-overlay v-if="overlay" v-model="value" :z-index="zIndex" :custom-style="overlayStyle" :duration="duration" @click="onClickOverlay" />
 		<view :class="getClasses" :style="popupStyle" @transitionend="onTransitionEnd">
 			<slot />
-			<view
+			<van-icon
 				v-if="closeable"
+				:name="closeIcon"
 				class="iconfont icon-fork close-icon-class van-popup__close-icon"
 				@tap="onClickCloseIcon"
 				:class="'van-popup__close-icon--' + closeIconPosition"
-			></view>
+			/>
 		</view>
 	</view>
 </template>
@@ -18,7 +19,8 @@
  * @property {Boolean} value 是否显示组件
  * @property {Number} duration 动画时长，单位毫秒
  * @property {Boolean} round 是否显示圆角
- * @property {Boolean} closeable 是否显示关闭图标
+ * @property {Boolean} closeable 是否显示图标
+ * @property {String} closeIcon 图标名称
  * @property {Object} custom-style 自定义内容样式
  * @property {Object} overlay-style 自定义遮罩样式
  * @property {String} transition 动画类名，等价于 transtion 的name属性
@@ -49,6 +51,10 @@ export default {
 		},
 		round: Boolean,
 		closeable: Boolean,
+		closeIcon: {
+			type: String,
+			default: 'cross'
+		},
 		customStyle: {
 			type: Object,
 			default: () => {}
@@ -58,8 +64,7 @@ export default {
 			default: () => {}
 		},
 		transition: {
-			type: String,
-			observer: 'observeClass'
+			type: String
 		},
 		zIndex: {
 			type: Number,
@@ -79,8 +84,7 @@ export default {
 		},
 		position: {
 			type: String,
-			default: 'center',
-			observer: 'observeClass'
+			default: 'center'
 		},
 		safeAreaInsetBottom: {
 			type: Boolean,
@@ -104,6 +108,12 @@ export default {
 			} else {
 				this.observeShow(false, true);
 			}
+		},
+		transition: function() {
+			this.observeClass();
+		},
+		position: function() {
+			this.observeClass();
 		}
 	},
 	created() {
@@ -115,22 +125,20 @@ export default {
 	},
 	computed: {
 		popupStyle() {
-			return this.style([
-				{
-					'z-index': this.zIndex,
-					'-webkit-transition-duration': this.currentDuration + 'ms',
-					'transition-duration': this.currentDuration + 'ms',
-					...this.customStyle
-				},
-				this.display ? null : 'display: none'
-			]);
+			return this.$u.style({
+				'z-index': this.zIndex,
+				'-webkit-transition-duration': this.currentDuration + 'ms',
+				'transition-duration': this.currentDuration + 'ms',
+				display: this.display ? null : 'none',
+				...this.customStyle
+			});
 		},
 		getClasses() {
 			// safeTop: this.safeAreaInsetTop
-			let info = this.$u.memoize.memoize(this.$u.bem.bem)('popup', [this.position, { round: this.round, safe: this.safeAreaInsetBottom }]);
-			let classes = Array.isArray(this.classes)? this.classes.join(' '):this.classes
+			let info = this.$u.memoize.memoize(this.$u.bem)('popup', [this.position, { round: this.round, safe: this.safeAreaInsetBottom }]);
+			let classes = Array.isArray(this.classes) ? this.classes.join(' ') : this.classes;
 			return `${info} ${classes}`;
-		},
+		}
 	},
 	methods: {
 		onClickCloseIcon() {
@@ -218,26 +226,6 @@ export default {
 				this.inited = false;
 				this.display = false;
 			}
-		},
-		style(styles) {
-			if (this.$u.validator.isArray(styles)) {
-				return styles
-					.filter(item => item != null && item !== '')
-					.map(item => this.style(item))
-					.join(';');
-			}
-
-			if (styles instanceof Object) {
-				return Object.keys(styles)
-					.filter(function(key) {
-						return styles[key] != null && styles[key] !== '';
-					})
-					.map(function(key) {
-						return [key, [styles[key]]].join(':');
-					})
-					.join(';');
-			}
-			return styles;
 		}
 	}
 };
@@ -253,7 +241,7 @@ export default {
 	-webkit-animation: ease both;
 	animation: ease both;
 	-webkit-overflow-scrolling: touch;
-	background-color: $van-bg-content;
+	background-color: $popup-background-color;
 }
 
 .van-popup--center {
@@ -264,7 +252,7 @@ export default {
 }
 
 .van-popup--center.van-popup--round {
-	border-radius: $van-border-radius-base;
+	border-radius: $popup-round-border-radius;
 }
 
 .van-popup--top {
@@ -274,7 +262,7 @@ export default {
 }
 
 .van-popup--top.van-popup--round {
-	border-radius: 0 0 $van-border-radius-base $van-border-radius-base;
+	border-radius: 0 0 $popup-round-border-radius $popup-round-border-radius;
 }
 
 .van-popup--right {
@@ -285,7 +273,7 @@ export default {
 }
 
 .van-popup--right.van-popup--round {
-	border-radius: $van-border-radius-base 0 0 $van-border-radius-base;
+	border-radius: $popup-round-border-radius 0 0 $popup-round-border-radius;
 }
 
 .van-popup--bottom {
@@ -295,7 +283,7 @@ export default {
 }
 
 .van-popup--bottom.van-popup--round {
-	border-radius: $van-border-radius-base $van-border-radius-base 0 0;
+	border-radius: $popup-round-border-radius $popup-round-border-radius 0 0;
 }
 
 .van-popup--left {
@@ -306,7 +294,7 @@ export default {
 }
 
 .van-popup--left.van-popup--round {
-	border-radius: 0 $van-border-radius-base $van-border-radius-base 0;
+	border-radius: 0 $popup-round-border-radius $popup-round-border-radius 0;
 }
 
 .van-popup--bottom.van-popup--safe {
@@ -319,29 +307,29 @@ export default {
 
 .van-popup__close-icon {
 	position: absolute;
-	z-index: 1;
-	color: $van-color-icon;
-	font-size: $van-font-size-sm;
+	z-index: $popup-close-icon-z-index;
+	color: $popup-close-icon-color;
+	font-size: $popup-close-icon-size;
 }
 
 .van-popup__close-icon--top-left {
-	top: $van-margin-sm;
-	left: $van-margin-sm;
+	top: $popup-close-icon-margin;
+	left: $popup-close-icon-margin;
 }
 
 .van-popup__close-icon--top-right {
-	top: $van-margin-sm;
-	right: $van-margin-sm;
+	top: $popup-close-icon-margin;
+	right: $popup-close-icon-margin;
 }
 
 .van-popup__close-icon--bottom-left {
-	bottom: $van-margin-sm;
-	left: $van-margin-sm;
+	bottom: $popup-close-icon-margin;
+	left: $popup-close-icon-margin;
 }
 
 .van-popup__close-icon--bottom-right {
-	right: $van-margin-sm;
-	bottom: $van-margin-sm;
+	right: $popup-close-icon-margin;
+	bottom: $popup-close-icon-margin;
 }
 
 .van-popup__close-icon:active {

@@ -42,6 +42,78 @@
             }
 
         }
+        ,{
+            "path" : "pages/components/icon/icon",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "icon",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/image/image",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "image",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/loading/loading",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "loading",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/button/button",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "button",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/toast/toast",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "toast",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/cell/cell",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "cell",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/layout/layout",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "layout",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/checkbox/checkbox",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "checkbox",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,

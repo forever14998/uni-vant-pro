@@ -105,36 +105,36 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-	padding: $van-margin-lg;
+	padding: 32rpx;
 	.overlay-content {
 		height: 200rpx;
 		width: 200rpx;
-		background-color: $van-bg-content;
+		background-color: $white;
 	}
 	.condition-div {
 		.condition-title {
-			padding: $van-margin-lg $van-margin-base;
-			font-size: $van-font-size-lg;
-			color: $van-text-main;
+			padding: 32rpx 24rpx;
+			font-size: 32rpx;
+			color: #333333;
 			font-weight: bold;
 		}
 		.condition-content {
-			background-color: $van-bg-grey;
-			border-radius: $van-border-radius-sm;
-			padding: $van-margin-sm;
-			margin: $van-margin-base;
+			background-color: $gray-1;
+			border-radius: 8rpx;
+			padding: 16rpx;
+			margin: 24rpx;
 			display: flex;
 			justify-content: space-between;
 			.condition-unit {
 				width: 100%;
-				padding: 0 $van-margin-lg;
-				font-size: $van-font-size-base;
-				color: $van-text-main;
-				border-radius: $van-border-radius-sm;
+				padding: 0 32rpx;
+				font-size: 28rpx;
+				color: #333333;
+				border-radius: 8rpx;
 				text-align: center;
 			}
 			.select-unit {
-				background-color: $van-bg-content;
+				background-color: $white;
 			}
 		}
 	}
