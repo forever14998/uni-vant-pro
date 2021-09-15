@@ -3,19 +3,26 @@
 </template>
 
 <script>
-import eventBus from '../../libs/common/eventBus.js';
 export default {
-	provide() {
-		return {
-			gutter: () => this.gutter
-		};
-	},
 	props: {
 		gutter: {
-			type: Number
+			type: Number,
+			default: 0
+		}
+	},
+	mounted() {
+		this.setGutter()
+	},
+	watch:{
+		gutter() {
+			this.setGutter()
 		}
 	},
 	methods: {
+		setGutter() {
+			console.log(this.gutter)
+			uni.$emit('getGutter', this.gutter)
+		},
 		rootStyle(data) {
 			if (!data.gutter) {
 				return '';

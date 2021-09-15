@@ -3,26 +3,33 @@
 </template>
 
 <script>
-import eventBus from '../../libs/common/eventBus.js';
 export default {
-	inject: ['gutter'],
 	props: {
 		span: Number,
 		offset: Number
 	},
 	data() {
 		return {
+			gutter: null
 		};
+	},
+	mounted() {
+		uni.$on('getGutter', (msg) => {
+			console.log(msg)
+			this.gutter = msg
+		})
+	},
+	beforeDestroy() {
+		uni.$off('getGutter');
 	},
 	methods: {
 		rootStyle(data) {
-			if (!data.gutter()) {
+			if (!data.gutter) {
 				return '';
 			}
-
 			return this.$u.style({
-				'padding-right': this.$u.addUnit(data.gutter() / 2),
-				'padding-left': this.$u.addUnit(data.gutter() / 2)
+				'padding-right': this.$u.addUnit(data.gutter / 2),
+				'padding-left': this.$u.addUnit(data.gutter / 2)
 			});
 		}
 	}

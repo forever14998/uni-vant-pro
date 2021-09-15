@@ -2,13 +2,26 @@
 	<view class="content">
 		<view class="result-div">
 			<view class="headline">结果展示</view>
-			<!-- :disabled="true" -->
 			<view class="result-content">
-				<van-checkbox v-model="checkState" :disabled="selectDisabled" :useIconSlot="selectIcon">
-					<van-icon slot="icon" name="star-o" :class="{'select-icon': checkState}" v-if="selectIcon"/>
-					复选框
-				</van-checkbox>
+				<!-- groupDisabled -->
+				<van-checkbox-group v-if="!checkState" :disabled="groupDisabled" :max="2" :value="['a', 'b', 'c']">
+					<van-checkbox v-model="groupState.a" name="a">
+						复选框1
+					</van-checkbox>
+					<van-checkbox v-model="groupState.b" name="b">
+						复选框2
+					</van-checkbox>
+					<van-checkbox v-model="groupState.c" name="c">
+						复选框2
+					</van-checkbox>
+				</van-checkbox-group>
 			</view>
+		</view>
+		<view class="condition-headline">
+			<van-checkbox v-model="checkState" :disabled="selectDisabled" :useIconSlot="selectIcon">
+				<van-icon name="thumb-circle-o" slot="icon" :color="checkState ? '#3f8cf4' : ''" v-if="selectIcon" />
+				复选框
+			</van-checkbox>
 		</view>
 		<view class="condition-div">
 			<view class="condition-title">是否禁用</view>
@@ -38,16 +51,18 @@
 				</view>
 			</view>
 		</view>
-
+		<view class="condition-headline">
+			<van-checkbox :value="!checkState" @change="checkState=!checkState">复选框组</van-checkbox>
+		</view>
 		<view class="condition-div">
-			<view class="condition-title">卡片是否圆角</view>
+			<view class="condition-title">是否禁用</view>
 			<view class="condition-content">
 				<view
 					class="condition-unit"
-					:class="{ 'select-unit': selectInset === item.type }"
-					v-for="(item, index) in insetInfo"
+					:class="{ 'select-unit': groupDisabled === item.type }"
+					v-for="(item, index) in groupDisabledInfo"
 					:key="index"
-					@click="chooseType('selectInset', item.type)"
+					@click="chooseType('groupDisabled', item.type)"
 				>
 					{{ item.mode }}
 				</view>
@@ -145,12 +160,17 @@ export default {
 	data() {
 		return {
 			checkState: false,
+			groupState: {
+				a: false,
+				b: false,
+				c: false
+			},
 			disabledInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],
 			selectDisabled: null,
 			iconInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],
 			selectIcon: null,
-			insetInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
-			selectInset: false,
+			groupDisabledInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
+			groupDisabled: false,
 			// iconInfo: [{ type: null, mode: '默认' }, { type: 'http://doc.vantpro.com/assets/logo.png', mode: '是' }],
 			// selectIcon: null,
 			valueInfo: [{ type: null, mode: '默认' }, { type: '右侧内容', mode: '是' }],
@@ -197,13 +217,29 @@ export default {
 			padding-bottom: 32rpx;
 		}
 		.result-content {
-			height: 300rpx;
 			width: 100%;
-			.select-icon {
-				color: $blue;
-			}
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	}
+	.condition-headline {
+		margin: 50rpx 0 10rpx;
+		// padding: 0 24rpx;
+		font-size: 34rpx;
+		color: #333333;
+		font-weight: bold;
+		position: relative;
+	}
+	// .condition-headline::after {
+	// 	content: '';
+	// 	position: absolute;
+	// 	left: 0;
+	// 	top: 0;
+	// 	bottom: 0;
+	// 	width: 10rpx;
+	// 	background-color: $blue;
+	// }
 	.condition-div {
 		.condition-title {
 			padding: 32rpx 24rpx;

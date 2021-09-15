@@ -10,7 +10,7 @@
 		</view>
 		<view class="van-checkbox__icon-wrap" @click="toggle">
 			<slot v-if="useIconSlot" name="icon" />
-			<van-icon name="success" :class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: value }])]" :custom-style="iconStyle(checkedColor, value, disabled, parentDisabled, iconSize)" custom-class="icon-class" />
+			<van-icon v-else name="success" color="transparent" :class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: value }])]" :custom-style="iconStyle(checkedColor, value, disabled, parentDisabled, iconSize)" custom-class="icon-class" />
 		</view>
 		<view
 			v-if="labelPosition === 'right'"
@@ -25,9 +25,9 @@
 
 <script>
 export default {
-	inject: ['checkbox'],
 	props: {
 		value: Boolean, // 是否选中
+		name: String, // 标识 Checkbox 名称
 		disabled: Boolean, // 是否禁用
 		useIconSlot: Boolean, // 是否使用 icon slot
 		checkedColor: String, // 选中状态颜色
@@ -51,8 +51,20 @@ export default {
 	data() {
 		return {
 			parentDisabled: false,
-			direction: 'vertical'
+			direction: 'vertical',
+			parentInfo: {}
 		};
+	},
+	mounted() {
+		uni.$on('updateCheckbox',(msg)=> {
+			this.parentInfo = msg;
+			let info = Array.from(msg.value);
+			this.parentInfo.value = info.filter(el=> el=== this.name)
+			this.parentDisabled = msg.parentDisabled
+		})
+	},
+	beforeDestroy() {
+		uni.$off('updateCheckbox')
 	},
 	methods: {
 		emit(value) {
@@ -60,8 +72,8 @@ export default {
 			this.$emit('change', value);
 		},
 		emitChange() {
-			if (this.checkbox) {
-				this.setParentValue(this.checkbox, !this.value);
+			if (this.parentInfo) {
+				this.setParentValue(this.parentInfo, !this.value);
 			} else {
 				this.emit(!this.value);
 			}
@@ -77,19 +89,18 @@ export default {
 			}
 		},
 		setParentValue(parent, value) {
-			let parentInfo = parent({ name: this.name });
-			const parentValue = parentInfo.value.slice();
-			const { max } = parentInfo;
+			const parentValue = this.parentInfo.value.slice();
+			const { max } = this.parentInfo;
 			if (value) {
 				if (max && parentValue.length >= max) {
 					return;
 				}
 				if (parentValue.indexOf(this.name) === -1) {
 					parentValue.push(this.name);
-					this.emit(this.parentValue);
+					this.emit(true);
 				}
 			} else {
-				const index = parentValue.indexOf(name);
+				const index = parentValue.indexOf(this.name);
 				if (index !== -1) {
 					parentValue.splice(index, 1);
 					this.emit(parentValue);
@@ -99,11 +110,13 @@ export default {
 		iconStyle(checkedColor, value, disabled, parentDisabled, iconSize) {
 			var styles = {
 				'font-size': this.$u.addUnit(iconSize),
-				'color': '#fff'
 			};
 			if (checkedColor && value && !disabled && !parentDisabled) {
 				styles['border-color'] = checkedColor;
 				styles['background-color'] = checkedColor;
+			}
+			if (value) {
+				styles['color'] = disabled? '#c8c9cc': '#fff';
 			}
 			return this.$u.style(styles);
 		}

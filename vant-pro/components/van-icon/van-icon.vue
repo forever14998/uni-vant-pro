@@ -34,7 +34,6 @@ export default {
 		// 图标颜色
 		color: {
 			type: String,
-			default: '#646566'
 		},
 		// 自定义样式
 		customStyle: {

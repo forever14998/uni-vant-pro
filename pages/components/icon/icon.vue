@@ -48,8 +48,8 @@ export default {
 			dotState: false,
 			badgeType: [{ type: null, mode: '默认' }, { type: '9', mode: '显示' }],
 			selectBadge: null,
-			colorType: [{ type: '#646566', mode: '默认' }, { type: '#3f8cf4', mode: '蓝色' }],
-			selectColor: '#646566'
+			colorType: [{ type: null, mode: '默认' }, { type: '#3f8cf4', mode: '蓝色' }],
+			selectColor: null
 		};
 	},
 	onLoad() {},
