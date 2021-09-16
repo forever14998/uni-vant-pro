@@ -10,7 +10,7 @@
 		</view>
 		<view class="van-checkbox__icon-wrap" @click="toggle">
 			<slot v-if="useIconSlot" name="icon" />
-			<van-icon v-else name="success" color="transparent" :class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: value }])]" :custom-style="iconStyle(checkedColor, value, disabled, parentDisabled, iconSize)" custom-class="icon-class" />
+			<van-icon v-else name="success" color="transparent" :class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: checked }])]" :custom-style="iconStyle(checkedColor, checked, disabled, parentDisabled, iconSize)" custom-class="icon-class" />
 		</view>
 		<view
 			v-if="labelPosition === 'right'"
@@ -50,60 +50,69 @@ export default {
 	},
 	data() {
 		return {
+			checked: null,
 			parentDisabled: false,
 			direction: 'vertical',
-			parentInfo: {}
+			parentInfo: null
 		};
+	},
+	watch: {
+		value: function(val) {
+			this.checked = val
+		}
 	},
 	mounted() {
 		uni.$on('updateCheckbox',(msg)=> {
 			this.parentInfo = msg;
-			let info = Array.from(msg.value);
-			this.parentInfo.value = info.filter(el=> el=== this.name)
-			this.parentDisabled = msg.parentDisabled
+			this.parentDisabled = msg.disabled
+			this.direction = msg.direction
 		})
 	},
 	beforeDestroy() {
 		uni.$off('updateCheckbox')
 	},
 	methods: {
-		emit(value) {
-			this.$emit('input', value);
-			this.$emit('change', value);
+		emit(target, value) {
+			target.$emit('input', value);
+			target.$emit('change', value);
 		},
-		emitChange() {
+		emitChange(value) {
 			if (this.parentInfo) {
-				this.setParentValue(this.parentInfo, !this.value);
+				this.setParentValue(this.parentInfo, value);
 			} else {
-				this.emit(!this.value);
+				this.emit(this, value);
 			}
 		},
 		toggle() {
 			if (!this.disabled && !this.parentDisabled) {
-				this.emitChange();
+				console.log(!this.checked)
+				this.emitChange(!this.checked);
 			}
 		},
 		onClickLabel() {
 			if (!this.disabled && !this.labelDisabled && !this.parentDisabled) {
-				this.emitChange();
+				this.emitChange(!this.checked);
 			}
 		},
 		setParentValue(parent, value) {
-			const parentValue = this.parentInfo.value.slice();
+			// ? this.parentInfo.value.slice() : []
+			const parentValue = this.parentInfo.checkedList;
 			const { max } = this.parentInfo;
+			console.log(value);
 			if (value) {
 				if (max && parentValue.length >= max) {
 					return;
 				}
 				if (parentValue.indexOf(this.name) === -1) {
 					parentValue.push(this.name);
-					this.emit(true);
+					console.log(value)
+					this.emit(this.parentInfo, true);
 				}
 			} else {
 				const index = parentValue.indexOf(this.name);
 				if (index !== -1) {
 					parentValue.splice(index, 1);
-					this.emit(parentValue);
+					this.emit(this.parentInfo, parentValue);
 				}
 			}
 		},

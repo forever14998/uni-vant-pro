@@ -25,8 +25,16 @@ export default {
 			default: 'vertical'
 		}
 	},
+	data() {
+		return {
+			checkedList: []
+		}
+	},
 	watch:{
 		value() {
+			this.checkedList = this.value;
+		},
+		checkedList() {
 			this.updateChildren()
 		},
 		disabled() {
@@ -34,19 +42,22 @@ export default {
 		}
 	},
 	mounted() {
+		this.checkedList = this.value
 		this.updateChildren()
 	},
 	methods: {
 		updateChildren() {
-			uni.$emit('updateCheckbox',this.updateChild())
+			uni.$emit('updateCheckbox',this)
+			// console.log(this.$children[0].$children)
+			this.$children[0].$children.forEach((child)=>{
+			  return this.updateChild(child);
+			});
 		},
-		updateChild() {
-			return {
-				parentDisabled: this.disabled,
-				direction: this.direction,
-				max: this.max,
-				value: [...this.value]
-			}
+		updateChild(child) {
+			// child.parentDisabled = this.disabled;
+			// child.parentInfo.direction = this.direction;
+			// child.parentInfo.max = this.max;
+			child.checked = this.checkedList.indexOf(child.name) !== -1
 		}
 	}
 };
