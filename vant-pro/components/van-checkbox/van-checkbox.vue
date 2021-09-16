@@ -62,30 +62,33 @@ export default {
 		}
 	},
 	mounted() {
-		uni.$on('updateCheckbox',(msg)=> {
-			this.parentInfo = msg;
-			this.parentDisabled = msg.disabled
-			this.direction = msg.direction
-		})
-	},
-	beforeDestroy() {
-		uni.$off('updateCheckbox')
+		this.checked = this.value;
+		if(this.getParentInfo('VAN_CHECKBOX_GROUP_STATE', '$data')) {
+			this.parentDisabled = this.getParentInfo('disabled', '$props')
+			this.direction = this.getParentInfo('direction', '$props')
+		}
 	},
 	methods: {
+		getParentInfo(key, el) {
+			let parent = this.$parent
+			// #ifdef H5
+			return parent.$parent[key]
+			// #endif
+			return parent[el][key]
+		},
 		emit(target, value) {
 			target.$emit('input', value);
 			target.$emit('change', value);
 		},
 		emitChange(value) {
-			if (this.parentInfo) {
-				this.setParentValue(this.parentInfo, value);
+			if (this.getParentInfo('VAN_CHECKBOX_GROUP_STATE', '$data')) {
+				this.setParentValue(value);
 			} else {
 				this.emit(this, value);
 			}
 		},
 		toggle() {
 			if (!this.disabled && !this.parentDisabled) {
-				console.log(!this.checked)
 				this.emitChange(!this.checked);
 			}
 		},
@@ -94,25 +97,32 @@ export default {
 				this.emitChange(!this.checked);
 			}
 		},
-		setParentValue(parent, value) {
-			// ? this.parentInfo.value.slice() : []
-			const parentValue = this.parentInfo.checkedList;
-			const { max } = this.parentInfo;
-			console.log(value);
+		setParentValue(value) {
+			const parentValue = this.getParentInfo('checkedList', '$data');
+			const max = this.getParentInfo('max', '$props');
 			if (value) {
 				if (max && parentValue.length >= max) {
 					return;
 				}
 				if (parentValue.indexOf(this.name) === -1) {
 					parentValue.push(this.name);
-					console.log(value)
-					this.emit(this.parentInfo, true);
+					// #ifdef H5
+					this.emit(this.$parent.$parent, true);
+					// #endif
+					// #ifdef MP-WEIXIN
+					this.emit(this.$parent, true);
+					// #endif
 				}
 			} else {
 				const index = parentValue.indexOf(this.name);
 				if (index !== -1) {
 					parentValue.splice(index, 1);
-					this.emit(this.parentInfo, parentValue);
+					// #ifdef H5
+					this.emit(this.$parent.$parent, parentValue);
+					// #endif
+					// #ifdef MP-WEIXIN
+					this.emit(this.$parent, parentValue);
+					// #endif
 				}
 			}
 		},
@@ -125,7 +135,7 @@ export default {
 				styles['background-color'] = checkedColor;
 			}
 			if (value) {
-				styles['color'] = disabled? '#c8c9cc': '#fff';
+				styles['color'] = disabled || parentDisabled? '#c8c9cc': '#fff';
 			}
 			return this.$u.style(styles);
 		}

@@ -3,8 +3,7 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<!-- groupDisabled -->
-				<van-checkbox-group v-if="!checkState" :disabled="groupDisabled" :max="2" :value="['a', 'b', 'c']">
+				<van-checkbox-group v-if="!checkState" :disabled="groupDisabled" :max="maxSelect">
 					<van-checkbox v-model="groupState.a" name="a">
 						复选框1
 					</van-checkbox>
@@ -69,84 +68,14 @@
 			</view>
 		</view>
 		<view class="condition-div">
-			<view class="condition-title">是否显示单元格左侧图标</view>
+			<view class="condition-title">是否限制最大可选数</view>
 			<view class="condition-content">
 				<view
 					class="condition-unit"
-					:class="{ 'select-unit': selectIcon === item.type }"
-					v-for="(item, index) in iconInfo"
+					:class="{ 'select-unit': maxSelect === item.type }"
+					v-for="(item, index) in maxInfo"
 					:key="index"
-					@click="chooseType('selectIcon', item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">是否显示右侧内容</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectValue === item.type }"
-					v-for="(item, index) in valueInfo"
-					:key="index"
-					@click="chooseType('selectValue', item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">是否显示描述信息</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectLabel === item.type }"
-					v-for="(item, index) in labelInfo"
-					:key="index"
-					@click="chooseType('selectLabel', item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">是否显示单元格下边框</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectCellBorder === item.type }"
-					v-for="(item, index) in cellBorderInfo"
-					:key="index"
-					@click="chooseType('selectCellBorder', item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">是否显示右箭头并点击开启反馈</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectLink === item.type }"
-					v-for="(item, index) in linkInfo"
-					:key="index"
-					@click="chooseType('selectLink', item.type)"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
-		<view class="condition-div">
-			<view class="condition-title">是否使用 label solt</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': selectSolt === item.type }"
-					v-for="(item, index) in soltInfo"
-					:key="index"
-					@click="chooseType('selectSolt', item.type)"
+					@click="chooseType('maxSelect', item.type)"
 				>
 					{{ item.mode }}
 				</view>
@@ -171,18 +100,8 @@ export default {
 			selectIcon: null,
 			groupDisabledInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
 			groupDisabled: false,
-			// iconInfo: [{ type: null, mode: '默认' }, { type: 'http://doc.vantpro.com/assets/logo.png', mode: '是' }],
-			// selectIcon: null,
-			valueInfo: [{ type: null, mode: '默认' }, { type: '右侧内容', mode: '是' }],
-			selectValue: null,
-			labelInfo: [{ type: null, mode: '默认' }, { type: '描述内容', mode: '是' }],
-			selectLabel: null,
-			cellBorderInfo: [{ type: true, mode: '默认' }, { type: false, mode: '否' }],
-			selectCellBorder: true,
-			linkInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
-			selectLink: false,
-			soltInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
-			selectSolt: false
+			maxInfo: [{ type: null, mode: '默认' }, { type: 2, mode: '2' }],
+			maxSelect: null
 		};
 	},
 	onLoad() {},

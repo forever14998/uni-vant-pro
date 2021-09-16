@@ -4,16 +4,13 @@
 
 <script>
 export default {
-	// field: true,
-	// relation: useChildren('checkbox', function(target) {
-	// 	this.updateChild(target);
-	// }),
 	props: {
 		// 设置最大可选数
 		max: Number,
 		// 所有选中项的 name
 		value: {
-			type: Array
+			type: Array,
+			default:()=>[]
 		},
 		// 是否禁用所有单选框
 		disabled: {
@@ -27,7 +24,8 @@ export default {
 	},
 	data() {
 		return {
-			checkedList: []
+			checkedList: [],
+			VAN_CHECKBOX_GROUP_STATE: true // 用于子组件
 		}
 	},
 	watch:{
@@ -47,17 +45,17 @@ export default {
 	},
 	methods: {
 		updateChildren() {
-			uni.$emit('updateCheckbox',this)
-			// console.log(this.$children[0].$children)
-			this.$children[0].$children.forEach((child)=>{
+			let children = this.$children;
+			// #ifdef H5
+			children = children[0].$children
+			// #endif
+			children.forEach((child)=>{
 			  return this.updateChild(child);
 			});
 		},
 		updateChild(child) {
-			// child.parentDisabled = this.disabled;
-			// child.parentInfo.direction = this.direction;
-			// child.parentInfo.max = this.max;
 			child.checked = this.checkedList.indexOf(child.name) !== -1
+			child.parentDisabled = this.disabled
 		}
 	}
 };
