@@ -123,6 +123,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/datetime-picker/datetime-picker",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "datetime-picker",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,

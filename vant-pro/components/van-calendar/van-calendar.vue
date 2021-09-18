@@ -439,14 +439,14 @@ export default {
 		},
 		onConfirm() {
 			if (this.type === 'range') {
-				let rangeDateList = this.currentDate.filter(el => !this.$u.utils.isEmpty(el));
-				if (this.$u.utils.isEmpty(this.currentDate[0])) {
+				let rangeDateList = this.currentDate.filter(el => !this.$u.validator.isEmpty(el));
+				if (this.$u.validator.isEmpty(this.currentDate[0])) {
 					uni.showToast({
 						title: `请选择开始日期`,
 						icon: 'none'
 					});
 					return;
-				} else if (this.$u.utils.isEmpty(this.currentDate[1])) {
+				} else if (this.$u.validator.isEmpty(this.currentDate[1])) {
 					uni.showToast({
 						title: `请选择结束日期`,
 						icon: 'none'
