@@ -23,6 +23,21 @@
 </template>
 
 <script>
+/**
+ * @property {String} src 图片路径
+ * @property {Boolean} round 是否显示为圆形
+ * @property {String| Number } width 宽度 单位rpx
+ * @property {String| Number } height 高度 单位rpx
+ * @property {String| Number } radius 圆角大小 单位rpx
+ * @property {Boolean} lazyLoad 是否懒加载
+ * @property {Boolean} useErrorSlot 是否自定义失败提示
+ * @property {Boolean} useLoadingSlot 是否自定义加载中提示
+ * @property {Boolean} showMenuByLongpress 是否开启长按图片显示识别小程序码菜单
+ * @property {String} fit 图片填充模式 contain|cover|fill|none|scale-down
+ * @property {Boolean} showError 是否展示图片加载失败的提示
+ * @property {Boolean} showLoading 是否展示图片加载中的提示
+ * @event {Function} click 点击图标时触发
+ */
 import { button } from '../../libs/minixs/button.js';
 
 const FIT_MODE_MAP = {
@@ -35,7 +50,6 @@ const FIT_MODE_MAP = {
 };
 export default {
 	mixins: [button],
-	classes: ['custom-class', 'loading-class', 'error-class', 'image-class'],
 	props: {
 		// 图片路径
 		src: {
@@ -44,14 +58,14 @@ export default {
 		},
 		// 是否显示为圆形
 		round: {
-			type:Boolean
+			type: Boolean
 		},
 		// 宽度 单位rpx
-		width: null,
+		width: String | Number,
 		// 高度 单位rpx
-		height: null,
+		height: String | Number,
 		// 圆角大小 单位rpx
-		radius: null,
+		radius: String | Number,
 		// 是否懒加载
 		lazyLoad: Boolean,
 		// 是否自定义失败提示
@@ -119,48 +133,48 @@ export default {
 
 <style scoped lang="scss">
 .van-image {
-  position: relative;
-  display: inline-block
+	position: relative;
+	display: inline-block;
 }
 
 .van-image--round {
-  overflow: hidden;
-  border-radius: 50%
+	overflow: hidden;
+	border-radius: 50%;
 }
 
 .van-image--round .van-image__img {
-  border-radius: inherit
+	border-radius: inherit;
 }
 
 .van-image__error,
 .van-image__img,
 .van-image__loading {
-  display: block;
-  width: 100%;
-  height: 100%
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .van-image__error,
 .van-image__loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: $image-placeholder-text-color;
-  font-size: $image-placeholder-font-size;
-  background-color: $image-placeholder-background-color
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: $image-placeholder-text-color;
+	font-size: $image-placeholder-font-size;
+	background-color: $image-placeholder-background-color;
 }
 
 .van-image__loading-icon {
-  color: $image-loading-icon-color;
-  font-size: $image-loading-icon-size !important
+	color: $image-loading-icon-color;
+	font-size: $image-loading-icon-size !important;
 }
 
 .van-image__error-icon {
-  color: $image-error-icon-color;
-  font-size: $image-error-icon-size !important
+	color: $image-error-icon-color;
+	font-size: $image-error-icon-size !important;
 }
 </style>

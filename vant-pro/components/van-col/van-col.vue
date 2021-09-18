@@ -3,10 +3,14 @@
 </template>
 
 <script>
+/**
+ * @property {String | Number} offset 列元素偏移距离
+ * @property {String | Number} span 列元素宽度
+ */
 export default {
 	props: {
-		span: Number,
-		offset: Number
+		span: String | Number,
+		offset: String | Number
 	},
 	data() {
 		return {
@@ -14,10 +18,10 @@ export default {
 		};
 	},
 	mounted() {
-		uni.$on('getGutter', (msg) => {
-			console.log(msg)
-			this.gutter = msg
-		})
+		uni.$on('getGutter', msg => {
+			console.log(msg);
+			this.gutter = msg;
+		});
 	},
 	beforeDestroy() {
 		uni.$off('getGutter');

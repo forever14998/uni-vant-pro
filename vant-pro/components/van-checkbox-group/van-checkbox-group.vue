@@ -3,6 +3,12 @@
 </template>
 
 <script>
+/**
+ * @property {Number} max 设置最大可选数
+ * @property {Array} value 所有选中项的 name
+ * @property {Boolean} disabled 是否禁用所有单选框
+ * @property {String} direction 排列方向，可选值为 vertical | horizontal
+ */
 export default {
 	props: {
 		// 设置最大可选数
@@ -10,11 +16,11 @@ export default {
 		// 所有选中项的 name
 		value: {
 			type: Array,
-			default:()=>[]
+			default: () => []
 		},
 		// 是否禁用所有单选框
 		disabled: {
-			type: Boolean,
+			type: Boolean
 		},
 		// 排列方向，可选值为 horizontal
 		direction: {
@@ -26,36 +32,36 @@ export default {
 		return {
 			checkedList: [],
 			VAN_CHECKBOX_GROUP_STATE: true // 用于子组件
-		}
+		};
 	},
-	watch:{
+	watch: {
 		value() {
 			this.checkedList = this.value;
 		},
 		checkedList() {
-			this.updateChildren()
+			this.updateChildren();
 		},
 		disabled() {
-			this.updateChildren()
+			this.updateChildren();
 		}
 	},
 	mounted() {
-		this.checkedList = this.value
-		this.updateChildren()
+		this.checkedList = this.value;
+		this.updateChildren();
 	},
 	methods: {
 		updateChildren() {
 			let children = this.$children;
 			// #ifdef H5
-			children = children[0].$children
+			children = children[0].$children;
 			// #endif
-			children.forEach((child)=>{
-			  return this.updateChild(child);
+			children.forEach(child => {
+				return this.updateChild(child);
 			});
 		},
 		updateChild(child) {
-			child.checked = this.checkedList.indexOf(child.name) !== -1
-			child.parentDisabled = this.disabled
+			child.checked = this.checkedList.indexOf(child.name) !== -1;
+			child.parentDisabled = this.disabled;
 		}
 	}
 };

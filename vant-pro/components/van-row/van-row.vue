@@ -3,25 +3,27 @@
 </template>
 
 <script>
+/**
+ * @property {String|| Number} gutter 列元素之间的间距（单位为 rpx）
+ */
 export default {
 	props: {
 		gutter: {
-			type: Number,
+			type: String | Number,
 			default: 0
 		}
 	},
 	mounted() {
-		this.setGutter()
+		this.setGutter();
 	},
-	watch:{
+	watch: {
 		gutter() {
-			this.setGutter()
+			this.setGutter();
 		}
 	},
 	methods: {
 		setGutter() {
-			console.log(this.gutter)
-			uni.$emit('getGutter', this.gutter)
+			uni.$emit('getGutter', this.gutter);
 		},
 		rootStyle(data) {
 			if (!data.gutter) {

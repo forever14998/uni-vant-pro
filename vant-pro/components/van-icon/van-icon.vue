@@ -13,6 +13,7 @@
  * @property {String} color 图标颜色
  * @property {String} classPrefix 图标前缀
  * @property {String} name 图标名字
+ * @event {Function} click 点击图标时触发	
  */
 export default {
 	props: {

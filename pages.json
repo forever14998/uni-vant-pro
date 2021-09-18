@@ -114,6 +114,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/picker/picker",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "picker",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,

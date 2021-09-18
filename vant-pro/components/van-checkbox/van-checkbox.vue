@@ -10,7 +10,14 @@
 		</view>
 		<view class="van-checkbox__icon-wrap" @click="toggle">
 			<slot v-if="useIconSlot" name="icon" />
-			<van-icon v-else name="success" color="transparent" :class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: checked }])]" :custom-style="iconStyle(checkedColor, checked, disabled, parentDisabled, iconSize)" custom-class="icon-class" />
+			<van-icon
+				v-else
+				name="success"
+				color="transparent"
+				:class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: checked }])]"
+				:custom-style="iconStyle(checkedColor, checked, disabled, parentDisabled, iconSize)"
+				custom-class="icon-class"
+			/>
 		</view>
 		<view
 			v-if="labelPosition === 'right'"
@@ -24,6 +31,18 @@
 </template>
 
 <script>
+/**
+ * @property {Boolean} value 是否选中
+ * @property {String} name 标识 Checkbox 名称
+ * @property {Boolean} disabled 是否禁用
+ * @property {Boolean} useIconSlot 是否使用 icon slot
+ * @property {String} checkedColor 选中状态颜色
+ * @property {String} labelPosition 文本位置，可选值为 right|left
+ * @property {Boolean} labelDisabled 是否禁用单选框内容点击
+ * @property {String} shape 形状，可选值为 round|square
+ * @property {String|Number} iconSize icon 大小
+ * @Event {Function} change 当绑定值变化时触发的事件
+ */
 export default {
 	props: {
 		value: Boolean, // 是否选中
@@ -44,7 +63,7 @@ export default {
 		},
 		// icon 大小
 		iconSize: {
-			type: null,
+			type: String|Number,
 			default: 28
 		}
 	},
@@ -58,23 +77,23 @@ export default {
 	},
 	watch: {
 		value: function(val) {
-			this.checked = val
+			this.checked = val;
 		}
 	},
 	mounted() {
 		this.checked = this.value;
-		if(this.getParentInfo('VAN_CHECKBOX_GROUP_STATE', '$data')) {
-			this.parentDisabled = this.getParentInfo('disabled', '$props')
-			this.direction = this.getParentInfo('direction', '$props')
+		if (this.getParentInfo('VAN_CHECKBOX_GROUP_STATE', '$data')) {
+			this.parentDisabled = this.getParentInfo('disabled', '$props');
+			this.direction = this.getParentInfo('direction', '$props');
 		}
 	},
 	methods: {
 		getParentInfo(key, el) {
-			let parent = this.$parent
+			let parent = this.$parent;
 			// #ifdef H5
-			return parent.$parent[key]
+			return parent.$parent[key];
 			// #endif
-			return parent[el][key]
+			return parent[el][key];
 		},
 		emit(target, value) {
 			target.$emit('input', value);
@@ -128,14 +147,14 @@ export default {
 		},
 		iconStyle(checkedColor, value, disabled, parentDisabled, iconSize) {
 			var styles = {
-				'font-size': this.$u.addUnit(iconSize),
+				'font-size': this.$u.addUnit(iconSize)
 			};
 			if (checkedColor && value && !disabled && !parentDisabled) {
 				styles['border-color'] = checkedColor;
 				styles['background-color'] = checkedColor;
 			}
 			if (value) {
-				styles['color'] = disabled || parentDisabled? '#c8c9cc': '#fff';
+				styles['color'] = disabled || parentDisabled ? '#c8c9cc' : '#fff';
 			}
 			return this.$u.style(styles);
 		}

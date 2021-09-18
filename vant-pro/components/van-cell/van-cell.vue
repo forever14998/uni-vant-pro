@@ -10,7 +10,7 @@
 		<van-icon v-if="icon" :name="icon" class="van-cell__left-icon-wrap" custom-class="van-cell__left-icon" />
 		<slot v-else name="icon" />
 
-		<view :style="[headlineStyle({ titleWidth, titleStyle })]" class="van-cell__title title-class">
+		<view :style="[headlineStyle()]" class="van-cell__title title-class">
 			<block v-if="title">{{ title }}</block>
 			<slot v-else name="title" />
 
@@ -39,12 +39,30 @@
 
 <script>
 import * as link from '../../libs/minixs/link.js';
+/**
+ * @property {String | Number} title 左侧标题	
+ * @property {String | Number} value 右侧内容	
+ * @property {String} icon 左侧图标名称或图片链接，可选值见 Icon 组件	
+ * @property {String} size 单元格大小，可选值为 large
+ * @property {String} label 标题下方的描述信息
+ * @property {Boolean} center 是否使内容垂直居中
+ * @property {Boolean} is-link 是否展示右侧箭头并开启点击反馈
+ * @property {Boolean} required 是否显示表单必填星号
+ * @property {Boolean} clickable 是否开启点击反馈	
+ * @property {String} title-width 默认选中的日期
+ * @property {Object} custom-style 日期格式化函数
+ * @property {String} arrow-direction 箭头方向，可选值为 right|left|up|down
+ * @property {Boolean} use-label-slot 是否使用 label slot
+ * @property {Boolean} border 是否显示下边框
+ * @property {Object} title-style 标题样式
+ * @property {String} url 点击后跳转的链接地址	
+ * @property {String} link-type 链接跳转类型，可选值为 navigateTo | redirectTo | switchTab | reLaunch	
+ */
 export default {
-	classes: ['title-class', 'label-class', 'value-class', 'right-icon-class', 'hover-class'],
 	mixins: [link],
 	props: {
-		title: null,
-		value: null,
+		title: String | Number,
+		value: String | Number,
 		icon: String,
 		size: String,
 		label: String,
@@ -67,11 +85,11 @@ export default {
 			this.$emit('click', event.detail);
 			this.jumpLink();
 		},
-		headlineStyle(data) {
+		headlineStyle() {
 			return this.$u.style({
-				'max-width': this.$u.addUnit(data.titleWidth),
-				'min-width': this.$u.addUnit(data.titleWidth),
-				...data.titleStyle
+				'max-width': this.$u.addUnit(this.titleWidth),
+				'min-width': this.$u.addUnit(this.titleWidth),
+				...this.titleStyle
 			});
 		}
 	}

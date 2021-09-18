@@ -62,6 +62,12 @@
 					<van-icon name="arrow"></van-icon>
 				</view>
 			</view>
+			<view class="van_card__content">
+				<view class="van_index__unit" @click="navUnit('/pages/components/picker/picker')">
+					<view class="van_index__name">picker选择器</view>
+					<van-icon name="arrow"></van-icon>
+				</view>
+			</view>
 		</view>
 		<view class="van_index__card">
 			<view class="van_card__title">反馈组件</view>

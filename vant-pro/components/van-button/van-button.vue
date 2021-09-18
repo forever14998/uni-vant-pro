@@ -1,7 +1,6 @@
 <template>
 	<button
 		:id="id"
-		:data-detail="dataset"
 		class="custom-class"
 		:class="
 			[
@@ -12,7 +11,7 @@
 		hover-class="van-button--active hover-class"
 		:lang="lang"
 		:form-type="formType"
-		:style="[rootStyle({ plain, color, customStyle })]"
+		:style="[rootStyle()]"
 		:open-type="disabled || loading || (canIUseGetUserProfile && openType === 'getUserInfo') ? '' : openType"
 		:business-id="businessId"
 		:session-from="sessionFrom"
@@ -31,7 +30,7 @@
 		bindopensetting="onOpenSetting"
 	>
 		<block v-if="loading">
-			<van-loading custom-class="loading-class" :size="loadingSize" :type="loadingType" :color="loadingColor({ type, color, plain })" />
+			<van-loading custom-class="loading-class" :size="loadingSize" :type="loadingType" :color="loadingColor()" />
 			<view v-if="loadingText" class="van-button__loading-text">{{ loadingText }}</view>
 		</block>
 		<block v-else>
@@ -43,9 +42,27 @@
 
 <script>
 import { button } from '../../libs/minixs/button.js';
+/**
+ * @property {String} type 按钮类型，可选值为 primary info warning danger
+ * @property {String} size 按钮尺寸，可选值为 normal large small mini
+ * @property {String} color 按钮颜色，支持传入linear-gradient渐变色
+ * @property {String} icon 左侧图标名称或图片链接
+ * @property {Boolean} class-prefix 图标类名前缀，同 Icon 组件的 class-prefix 属性
+ * @property {Boolean} plain 是否为朴素按钮
+ * @property {Boolean} block 是否为块级元素	
+ * @property {Boolean} round 是否为圆形按钮	
+ * @property {Boolean} square 是否为方形按钮
+ * @property {Boolean} disabled 是否禁用按钮
+ * @property {Boolean} hairline 是否使用 0.5px 边框
+ * @property {Boolean} loading 是否显示为加载状态
+ * @property {String} loading-type 加载状态图标类型，可选值为 circular|spinner
+ * @property {Object} loading-text 加载状态提示文字	
+ * @property {String} loading-size 加载图标大小	
+ * @property {Object} custom-style 自定义样式
+ * @property {String} form-type 用于 form 组件，可选值为submit reset，点击分别会触发 form 组件的 submit/reset 事件
+ */
 export default {
 	mixins: [button],
-	// classes: ['hover-class', 'loading-class'],
 	data() {
 		return {
 			baseStyle: ''
@@ -82,7 +99,6 @@ export default {
 			type: String,
 			default: 'default'
 		},
-		dataset: null,
 		// 图标尺寸 large small mini
 		size: {
 			type: String,
@@ -109,31 +125,31 @@ export default {
 				});
 			}
 		},
-		rootStyle(data) {
-			if (!data.color) {
-				return data.customStyle;
+		rootStyle() {
+			if (!this.color) {
+				return this.customStyle;
 			}
 
 			var properties = {
-				color: data.plain ? data.color : '#fff',
-				background: data.plain ? null : data.color
+				color: this.plain ? this.color : '#fff',
+				background: this.plain ? null : this.color
 			};
 
 			// hide border when color is linear-gradient
-			if (data.color.indexOf('gradient') !== -1) {
+			if (this.color.indexOf('gradient') !== -1) {
 				properties.border = 0;
 			} else {
-				properties['border-color'] = data.color;
+				properties['border-color'] = this.color;
 			}
 
-			return this.$u.style(properties, data.customStyle);
+			return this.$u.style(properties, this.customStyle);
 		},
-		loadingColor(data) {
-			if (data.plain) {
-				return data.color ? data.color : '#c9c9c9';
+		loadingColor() {
+			if (this.plain) {
+				return this.color ? this.color : '#c9c9c9';
 			}
 
-			if (data.type === 'default') {
+			if (this.type === 'default') {
 				return '#c9c9c9';
 			}
 
