@@ -189,8 +189,8 @@ export default {
 			return this.picker;
 		},
 		async updateColumns() {
-			let _a = this.formatter,
-				formatter = _a === void 0 ? defaultFormatter : _a;
+			let _a = this.formatter;
+			let formatter = _a ? _a : defaultFormatter;
 			let results = this.getOriginColumns().map(function(column) {
 				return {
 					values: column.values.map(function(value) {

@@ -1,22 +1,12 @@
 <template>
-	<view
-		class="van-picker-column custom-class"
-		:style="rootStyle()"
-		@touchstart="onTouchStart"
-		@touchmove="onTouchMove"
-		@touchend="onTouchEnd"
-		@touchcancel="onTouchEnd"
-	>
-		<view :style="wrapperStyle()">
+	<view class="van-picker-column custom-class" :style="[rootStyle()]" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
+		<view :style="[wrapperStyle()]">
 			<view
 				v-for="(option, index) in options"
 				:key="index"
-				:style="`height: ${singleHeight}px`"
+				:style="'height: ' + singleHeight + 'px'"
 				class="van-ellipsis"
-				:class="[
-					$u.bem('picker-column__item', { disabled: option && option.disabled, selected: index === currentIndex }),
-					index === currentIndex ? 'active-class' : ''
-				]"
+				:class="[$u.bem('picker-column__item', { disabled: option && option.disabled, selected: index === currentIndex }), index === currentIndex ? 'active-class' : '']"
 				@click="onClickItem"
 			>
 				{{ optionText(option) }}
@@ -53,9 +43,9 @@ export default {
 			currentIndex: 0
 		};
 	},
-	computed:{
+	computed: {
 		singleHeight() {
-			return uni.upx2px(this.itemHeight)
+			return uni.upx2px(this.itemHeight);
 		}
 	},
 	watch: {
@@ -83,7 +73,7 @@ export default {
 		},
 		onTouchEnd() {
 			if (this.offset !== this.startOffset) {
-				this.duration = DEFAULT_DURATION
+				this.duration = DEFAULT_DURATION;
 				const index = this.$u.utils.range(-Math.round(this.offset / this.singleHeight), 0, this.getCount() - 1);
 				this.setIndex(index, true);
 			}
@@ -132,11 +122,11 @@ export default {
 		},
 		rootStyle() {
 			return this.$u.style({
-				height: (this.singleHeight * this.visibleItemCount) + 'px'
+				height: this.singleHeight * this.visibleItemCount + 'px'
 			});
 		},
 		wrapperStyle() {
-			let offset = (this.offset + (this.singleHeight * (this.visibleItemCount - 1)) / 2) + 'px';
+			let offset = this.offset + (this.singleHeight * (this.visibleItemCount - 1)) / 2 + 'px';
 			return this.$u.style({
 				transition: 'transform ' + this.duration + 'ms',
 				'line-height': this.singleHeight + 'px',
@@ -148,23 +138,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.van-picker-column {
-	  overflow: hidden;
-	  text-align: center;
-	  color: $picker-option-text-color;
-	  font-size: $picker-option-font-size
-	}
-	
-	.van-picker-column__item {
-	  padding: 0 10rpx
-	}
-	
-	.van-picker-column__item--selected {
-	  font-weight: $font-weight-bold;
-	  color: $picker-option-selected-text-color
-	}
-	
-	.van-picker-column__item--disabled {
-	  opacity: $picker-option-disabled-opacity
-	}
+.van-picker-column {
+	overflow: hidden;
+	text-align: center;
+	color: $picker-option-text-color;
+	font-size: $picker-option-font-size;
+}
+
+.van-picker-column__item {
+	padding: 0 10rpx;
+}
+
+.van-picker-column__item--selected {
+	font-weight: $font-weight-bold;
+	color: $picker-option-selected-text-color;
+}
+
+.van-picker-column__item--disabled {
+	opacity: $picker-option-disabled-opacity;
+}
 </style>
