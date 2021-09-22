@@ -117,7 +117,7 @@ export default {
 		// get column instance by index
 		getColumn(index) {
 			let children = this.$refs[`pickerColumn${index}`];
-			return children[0];
+			return children && children[0];
 		},
 		// get column value by index
 		getColumnValue(index) {
@@ -128,7 +128,7 @@ export default {
 		setColumnValue(index, value) {
 			const column = this.getColumn(index);
 			if (column == null) {
-				return Promise.reject(new Error('setColumnValue: 对应列不存在'));
+				return Promise.reject(()=> console.error('setColumnValue: 对应列不存在'));
 			}
 			return column.setValue(value);
 		},

@@ -11,7 +11,7 @@
 			<view
 				v-for="(option, index) in options"
 				:key="index"
-				:style="`height: ${itemHeight}rpx`"
+				:style="`height: ${singleHeight}px`"
 				class="van-ellipsis"
 				:class="[
 					$u.bem('picker-column__item', { disabled: option && option.disabled, selected: index === currentIndex }),
@@ -53,6 +53,11 @@ export default {
 			currentIndex: 0
 		};
 	},
+	computed:{
+		singleHeight() {
+			return uni.upx2px(this.itemHeight)
+		}
+	},
 	watch: {
 		defaultIndex(value) {
 			this.setIndex(value);
@@ -74,12 +79,12 @@ export default {
 		},
 		onTouchMove(event) {
 			const deltaY = event.touches[0].clientY - this.startY;
-			this.offset = this.$u.utils.range(this.startOffset + deltaY, -(this.getCount() * this.itemHeight), this.itemHeight);
+			this.offset = this.$u.utils.range(this.startOffset + deltaY, -(this.getCount() * this.singleHeight), this.singleHeight);
 		},
 		onTouchEnd() {
 			if (this.offset !== this.startOffset) {
 				this.duration = DEFAULT_DURATION
-				const index = this.$u.utils.range(-Math.round(this.offset / this.itemHeight), 0, this.getCount() - 1);
+				const index = this.$u.utils.range(-Math.round(this.offset / this.singleHeight), 0, this.getCount() - 1);
 				this.setIndex(index, true);
 			}
 		},
@@ -105,7 +110,7 @@ export default {
 		},
 		setIndex(index, userAction) {
 			index = this.adjustIndex(index) || 0;
-			this.offset = -index * this.itemHeight;
+			this.offset = -index * this.singleHeight;
 			if (index !== this.currentIndex) {
 				this.currentIndex = index;
 				userAction && this.$emit('change', index);
@@ -127,14 +132,14 @@ export default {
 		},
 		rootStyle() {
 			return this.$u.style({
-				height: this.$u.addUnit(this.itemHeight * this.visibleItemCount)
+				height: (this.singleHeight * this.visibleItemCount) + 'px'
 			});
 		},
 		wrapperStyle() {
-			let offset = this.$u.addUnit(this.offset + (this.itemHeight * (this.visibleItemCount - 1)) / 2);
+			let offset = (this.offset + (this.singleHeight * (this.visibleItemCount - 1)) / 2) + 'px';
 			return this.$u.style({
 				transition: 'transform ' + this.duration + 'ms',
-				'line-height': this.$u.addUnit(this.itemHeight),
+				'line-height': this.singleHeight + 'px',
 				transform: 'translate3d(0, ' + offset + ', 0)'
 			});
 		}

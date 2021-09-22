@@ -6,6 +6,7 @@
 		column-class="column-class"
 		:title="title"
 		:columns="columns"
+		:loading="loading"
 		:item-height="itemHeight"
 		:show-toolbar="showToolbar"
 		:visible-item-count="visibleItemCount"
@@ -18,29 +19,35 @@
 </template>
 
 <script>
+/**
+ * @property {String | Number} value 当前选中值
+ * @property {String} type 类型，可选值为 datetime | date | time | year-month不建议动态修改
+ * @property {(type, values) => values} filter 选项过滤函数
+ * @property {(type, value) => value} formatter 选项格式化函数
+ * @property {Number} min-date 可选的最小时间，精确到分钟	
+ * @property {Number} max-date 可选的最大时间，精确到分钟
+ * @property {Number} min-hour 可选的最小小时，针对 time 类型
+ * @property {Number} max-hour 可选的最大小时，针对 time 类型
+ * @property {Number} min-minute 可选的最小分钟，针对 time 类型
+ * @property {Number} max-minute 可选的最大分钟，针对 time 类型
+ * @property {Number} item-height 选项高度
+ * @property {Boolean} loading 是否显示加载状态
+ * @property {String} confirm-button-text 确认按钮文字	
+ * @property {String} cancel-button-text 取消按钮文字	
+ * @property {Number} visible-item-count 可见选项个数	
+ * @event {Function} confirm 点击完成按钮时触发
+ * @event {Function} cancel 点击取消按钮时触发
+ * @event {Function} change 选项改变时触发
+ */
 import { pickerProps } from '../../libs/js/van-picker/shared.js';
-var __assign =
-	(this && this.__assign) ||
-	function() {
-		__assign =
-			Object.assign ||
-			function(t) {
-				for (var s, i = 1, n = arguments.length; i < n; i++) {
-					s = arguments[i];
-					for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-				}
-				return t;
-			};
-		return __assign.apply(this, arguments);
-	};
-var __spreadArray =
+const __spreadArray =
 	(this && this.__spreadArray) ||
 	function(to, from) {
-		for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i];
+		for (let i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i];
 		return to;
 	};
 Object.defineProperty(exports, '__esModule', { value: true });
-var currentYear = new Date().getFullYear();
+const currentYear = new Date().getFullYear();
 function range(num, min, max) {
 	return Math.min(Math.max(num, min), max);
 }
@@ -48,8 +55,8 @@ function padZero(val) {
 	return ('00' + val).slice(-2);
 }
 function times(n, iteratee) {
-	var index = -1;
-	var result = Array(n < 0 ? 0 : n);
+	let index = -1;
+	let result = Array(n < 0 ? 0 : n);
 	while (++index < n) {
 		result[index] = iteratee(index);
 	}
@@ -67,14 +74,13 @@ function getTrueValue(formattedValue) {
 function getMonthEndDay(year, month) {
 	return 32 - new Date(year, month - 1, 32).getDate();
 }
-var defaultFormatter = function(type, value) {
+const defaultFormatter = function(type, value) {
 	return value;
 };
 export default {
-	classes: ['active-class', 'toolbar-class', 'column-class'],
-	props: __assign(__assign({}, pickerProps), {
+	props: Object.assign(Object.assign({}, pickerProps), {
 		value: {
-			type: null
+			type: Number | String
 		},
 		filter: null,
 		type: {
@@ -95,7 +101,7 @@ export default {
 		},
 		maxDate: {
 			type: Number,
-			default: new Date(currentYear + 10, 11, 31).getTime()
+			default: new Date(currentYear + 10, 12, 31).getTime()
 		},
 		minHour: {
 			type: Number,
@@ -116,9 +122,20 @@ export default {
 	}),
 	data() {
 		return {
-			innerValue: Date.now(),
+			innerValue: new Date().getTime(),
 			columns: []
 		};
+	},
+	computed: {
+		effectValue() {
+			if (this.value) {
+				return this.value
+			} else if (this.type === 'time') {
+				let date = new Date()
+				return date.getHours() + ':' + date.getMinutes()
+			}
+			return new Date().getTime();
+		}
 	},
 	watch: {
 		value() {
@@ -147,25 +164,23 @@ export default {
 		}
 	},
 	methods: {
-		updateValue: function() {
-			var _this = this;
-			var val = this.correctValue(this.value);
-			var isEqual = val === this.innerValue;
-			this.updateColumnValue(val).then(function() {
+		updateValue() {
+			let val = this.correctValue(this.effectValue);
+			let isEqual = val === this.innerValue;
+			this.updateColumnValue(val).then(() => {
 				if (!isEqual) {
-					_this.$emit('input', val);
+					this.$emit('input', val);
 				}
 			});
 		},
-		getPicker: function() {
+		getPicker() {
 			if (this.picker == null) {
-				console.log(this.$refs.vanDatetimePicker)
-				this.picker = this.selectComponent('.van-datetime-picker') || {};
-				var picker_1 = this.picker;
-				var setColumnValues_1 = picker_1.setColumnValues;
+				this.picker = this.$refs.vanDatetimePicker || {};
+				let picker_1 = this.picker;
+				let setColumnValues_1 = picker_1.setColumnValues;
 				picker_1.setColumnValues = function() {
-					var args = [];
-					for (var _i = 0; _i < arguments.length; _i++) {
+					let args = [];
+					for (let _i = 0; _i < arguments.length; _i++) {
 						args[_i] = arguments[_i];
 					}
 					return setColumnValues_1.apply(picker_1, __spreadArray(__spreadArray([], args), [false]));
@@ -173,25 +188,25 @@ export default {
 			}
 			return this.picker;
 		},
-		updateColumns: function() {
-			var _a = this.formatter,
+		async updateColumns() {
+			let _a = this.formatter,
 				formatter = _a === void 0 ? defaultFormatter : _a;
-			var results = this.getOriginColumns().map(function(column) {
+			let results = this.getOriginColumns().map(function(column) {
 				return {
 					values: column.values.map(function(value) {
 						return formatter(column.type, value);
 					})
 				};
 			});
-			return this.columns = results;
+			return (this.columns = results);
 		},
-		getOriginColumns: function() {
-			var filter = this.filter;
-			var results = this.getRanges().map(function(_a) {
-				var type = _a.type,
+		getOriginColumns() {
+			let filter = this.filter;
+			let results = this.getRanges().map(function(_a) {
+				let type = _a.type,
 					range = _a.range;
-				var values = times(range[1] - range[0] + 1, function(index) {
-					var value = range[0] + index;
+				let values = times(range[1] - range[0] + 1, function(index) {
+					let value = range[0] + index;
 					return type === 'year' ? '' + value : padZero(value);
 				});
 				if (filter) {
@@ -201,7 +216,7 @@ export default {
 			});
 			return results;
 		},
-		getRanges: function() {
+		getRanges() {
 			if (this.type === 'time') {
 				return [
 					{
@@ -214,19 +229,19 @@ export default {
 					}
 				];
 			}
-			var _a = this.getBoundary('max', this.innerValue),
+			let _a = this.getBoundary('max', this.innerValue),
 				maxYear = _a.maxYear,
 				maxDate = _a.maxDate,
 				maxMonth = _a.maxMonth,
 				maxHour = _a.maxHour,
 				maxMinute = _a.maxMinute;
-			var _b = this.getBoundary('min', this.innerValue),
+			let _b = this.getBoundary('min', this.innerValue),
 				minYear = _b.minYear,
 				minDate = _b.minDate,
 				minMonth = _b.minMonth,
 				minHour = _b.minHour,
 				minMinute = _b.minMinute;
-			var result = [
+			let result = [
 				{
 					type: 'year',
 					range: [minYear, maxYear]
@@ -255,18 +270,18 @@ export default {
 		isValidDate(date) {
 			return this.$u.validator.isDef(date) && !isNaN(new Date(date).getTime());
 		},
-		correctValue: function(value) {
+		correctValue(value) {
 			// validate value
-			var isDateType = this.type !== 'time';
+			let isDateType = this.type !== 'time';
 			if (isDateType && !this.isValidDate(value)) {
 				value = this.minDate;
 			} else if (!isDateType && !value) {
-				var minHour = this.minHour;
+				let minHour = this.minHour;
 				value = padZero(minHour) + ':00';
 			}
 			// time type
 			if (!isDateType) {
-				var _a = value.split(':'),
+				let _a = value.split(':'),
 					hour = _a[0],
 					minute = _a[1];
 				hour = padZero(range(hour, this.minHour, this.maxHour));
@@ -278,15 +293,15 @@ export default {
 			value = Math.min(value, this.maxDate);
 			return value;
 		},
-		getBoundary: function(type, innerValue) {
-			var _a;
-			var value = new Date(innerValue);
-			var boundary = new Date(this[type + 'Date']);
-			var year = boundary.getFullYear();
-			var month = 1;
-			var date = 1;
-			var hour = 0;
-			var minute = 0;
+		getBoundary(type, innerValue) {
+			let _a;
+			let value = new Date(innerValue);
+			let boundary = new Date(this[type + 'Date']);
+			let year = boundary.getFullYear();
+			let month = 1;
+			let date = 1;
+			let hour = 0;
+			let minute = 0;
 			if (type === 'max') {
 				month = 12;
 				date = getMonthEndDay(value.getFullYear(), value.getMonth() + 1);
@@ -307,58 +322,58 @@ export default {
 			}
 			return (_a = {}), (_a[type + 'Year'] = year), (_a[type + 'Month'] = month), (_a[type + 'Date'] = date), (_a[type + 'Hour'] = hour), (_a[type + 'Minute'] = minute), _a;
 		},
-		onCancel: function() {
+		onCancel() {
 			this.$emit('cancel');
 		},
-		onConfirm: function() {
+		onConfirm() {
 			this.$emit('confirm', this.innerValue);
 		},
-		onChange: function() {
-			var _this = this;
-			var value;
-			var picker = this.getPicker();
-			var originColumns = this.getOriginColumns();
-			if (this.type === 'time') {
-				var indexes = picker.getIndexes();
-				value = +originColumns[0].values[indexes[0]] + ':' + +originColumns[1].values[indexes[1]];
-			} else {
-				var indexes = picker.getIndexes();
-				var values = indexes.map(function(value, index) {
-					return originColumns[index].values[value];
-				});
-				var year = getTrueValue(values[0]);
-				var month = getTrueValue(values[1]);
-				var maxDate = getMonthEndDay(year, month);
-				var date = getTrueValue(values[2]);
-				if (this.type === 'year-month') {
-					date = 1;
+		onChange() {
+			let value;
+			let picker = this.getPicker();
+			let originColumns = this.getOriginColumns();
+			if (picker && picker.getIndexes) {
+				if (this.type === 'time') {
+					let indexes = picker.getIndexes();
+					value = +originColumns[0].values[indexes[0]] + ':' + +originColumns[1].values[indexes[1]];
+				} else {
+					let indexes = picker.getIndexes();
+					let values = indexes.map(function(value, index) {
+						return originColumns[index].values[value];
+					});
+					let year = getTrueValue(values[0]);
+					let month = getTrueValue(values[1]);
+					let maxDate = getMonthEndDay(year, month);
+					let date = getTrueValue(values[2]);
+					if (this.type === 'year-month') {
+						date = 1;
+					}
+					date = date > maxDate ? maxDate : date;
+					let hour = 0;
+					let minute = 0;
+					if (this.type === 'datetime') {
+						hour = getTrueValue(values[3]);
+						minute = getTrueValue(values[4]);
+					}
+					value = new Date(year, month - 1, date, hour, minute);
 				}
-				date = date > maxDate ? maxDate : date;
-				var hour = 0;
-				var minute = 0;
-				if (this.type === 'datetime') {
-					hour = getTrueValue(values[3]);
-					minute = getTrueValue(values[4]);
-				}
-				value = new Date(year, month - 1, date, hour, minute);
 			}
 			value = this.correctValue(value);
-			this.updateColumnValue(value).then(function() {
-				_this.$emit('input', value);
-				_this.$emit('change', picker);
+			this.updateColumnValue(value).then(() => {
+				this.$emit('input', value);
+				this.$emit('change', picker);
 			});
 		},
-		updateColumnValue(value) {
-			var _this = this;
-			var values = [];
-			var type = this.type;
-			var formatter = this.formatter || defaultFormatter;
-			var picker = this.getPicker();
+		async updateColumnValue(value) {
+			let values = [];
+			let type = this.type;
+			let formatter = this.formatter || defaultFormatter;
+			let picker = this.getPicker();
 			if (type === 'time') {
-				var pair = value.split(':');
+				let pair = value.split(':');
 				values = [formatter('hour', pair[0]), formatter('minute', pair[1])];
 			} else {
-				var date = new Date(value);
+				let date = new Date(value);
 				values = [formatter('year', '' + date.getFullYear()), formatter('month', padZero(date.getMonth() + 1))];
 				if (type === 'date') {
 					values.push(formatter('day', padZero(date.getDate())));
@@ -368,15 +383,15 @@ export default {
 				}
 			}
 			this.innerValue = value;
-			this.updateColumns();
-			picker && picker.setValues&& picker.setValues(values)
+			this.updateColumns().then(() => {
+				picker.setValues(values);
+			});
 		}
 	},
-	mounted: function() {
-		var _this = this;
-		var innerValue = this.correctValue(this.value);
+	mounted() {
+		let innerValue = this.correctValue(this.effectValue);
 		this.updateColumnValue(innerValue);
-		_this.$emit('input', innerValue);
+		this.$emit('input', innerValue);
 	}
 };
 </script>

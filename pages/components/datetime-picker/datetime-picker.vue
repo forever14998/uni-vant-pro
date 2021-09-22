@@ -2,12 +2,55 @@
 	<view class="content">
 		<view class="result-div">
 			<view class="headline">结果展示</view>
-			<view class="result-content"><van-datetime-picker type="datetime" :value="currentDate" :min-date="minDate" :max-date="maxDate" @input="onInput" /></view>
+			<view class="result-content">
+				<van-datetime-picker
+					v-if="selectType === 'datetime'"
+					:show-toolbar="showToolbar"
+					:value="currentDate"
+					type="datetime"
+					@input="onInput"
+					@cancel="pickerCancel"
+					@confirm="pickerConfirm"
+				/>
+				<van-datetime-picker
+					v-if="selectType === 'date'"
+					:show-toolbar="showToolbar"
+					:value="currentDate"
+					type="date"
+					@input="onInput"
+					@cancel="pickerCancel"
+					@confirm="pickerConfirm"
+				/>
+				<van-datetime-picker
+					v-if="selectType === 'time'"
+					:show-toolbar="showToolbar"
+					:value="currentTime"
+					type="time"
+					@input="onInput"
+					@cancel="pickerCancel"
+					@confirm="pickerConfirm"
+				/>
+				<van-datetime-picker
+					v-if="selectType === 'year-month'"
+					:show-toolbar="showToolbar"
+					:value="currentDate"
+					type="year-month"
+					@input="onInput"
+					@cancel="pickerCancel"
+					@confirm="pickerConfirm"
+				/>
+			</view>
 		</view>
 		<view class="condition-div">
-			<view class="condition-title">列配置</view>
+			<view class="condition-title">类型</view>
 			<view class="condition-content">
-				<view class="condition-unit" :class="{ 'select-unit': item.type }" v-for="(item, index) in columnsInfo" :key="index" @click="selectColumns(item)">
+				<view
+					class="condition-unit"
+					:class="{ 'select-unit': selectType === item.type }"
+					v-for="(item, index) in typeInfo"
+					:key="index"
+					@click="chooseType(item.type, 'selectType')"
+				>
 					{{ item.mode }}
 				</view>
 			</view>
@@ -26,20 +69,6 @@
 				</view>
 			</view>
 		</view>
-		<view class="condition-div">
-			<view class="condition-title">设置选中项索引（单列数据）</view>
-			<view class="condition-content">
-				<view
-					class="condition-unit"
-					:class="{ 'select-unit': defaultIndex === item.type }"
-					v-for="(item, index) in indexInfo"
-					:key="index"
-					@click="chooseType(item.type, 'defaultIndex')"
-				>
-					{{ item.mode }}
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -47,17 +76,12 @@
 export default {
 	data() {
 		return {
-			minHour: 10,
-			maxHour: 20,
-			minDate: new Date().getTime(),
-			maxDate: new Date(2019, 10, 1).getTime(),
-			currentDate: new Date().getTime(),
-			columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-			toolbarInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
-			showToolbar: false,
-			indexInfo: [{ type: null, mode: '默认' }, { type: 2, mode: '2' }],
-			defaultIndex: null,
-			columnsInfo: [{ type: true, key: 1, mode: '单列数据' }, { type: false, key: 2, mode: '多列数据' }]
+			currentTime: '12:00',
+			currentDate: new Date(2021, 11, 2).getTime(),
+			toolbarInfo: [{ type: true, mode: '默认' }, { type: false, mode: '否' }],
+			showToolbar: true,
+			typeInfo: [{ type: 'datetime', mode: '默认' }, { type: 'date', mode: 'date' }, { type: 'time', mode: 'time' }, { type: 'year-month', mode: 'yearMonth' }],
+			selectType: 'datetime'
 		};
 	},
 	onLoad() {},
@@ -69,9 +93,25 @@ export default {
 		chooseType(type, name) {
 			this[name] = type;
 		},
+		/**
+		 * @param {Object} event
+		 * 确定事件
+		 */
+		pickerConfirm(event) {
+			console.log(typeof event ? event : new Date(event));
+		},
+		/**
+		 * 取消事件
+		 */
+		pickerCancel() {
+			console.log('关闭组件');
+		},
+		/**
+		 * @param {Object} event
+		 * change回调
+		 */
 		onInput(event) {
-			console.log(event)
-			this.currentDate = event.detail;
+			console.log(typeof event ? event : new Date(event));
 		}
 	}
 };

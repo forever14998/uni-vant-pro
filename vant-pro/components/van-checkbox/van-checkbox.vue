@@ -41,7 +41,7 @@
  * @property {Boolean} labelDisabled 是否禁用单选框内容点击
  * @property {String} shape 形状，可选值为 round|square
  * @property {String|Number} iconSize icon 大小
- * @Event {Function} change 当绑定值变化时触发的事件
+ * @event {Function} change 当绑定值变化时触发的事件
  */
 export default {
 	props: {
