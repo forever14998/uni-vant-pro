@@ -75,6 +75,10 @@
 					<view class="van_index__name">rate评分</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
+				<view class="van_index__unit" @click="navUnit('/pages/components/search/search')">
+					<view class="van_index__name">search搜索</view>
+					<van-icon name="arrow"></van-icon>
+				</view>
 			</view>
 		</view>
 		<view class="van_index__card">

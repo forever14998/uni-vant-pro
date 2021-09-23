@@ -159,6 +159,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/search/search",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "search",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,
