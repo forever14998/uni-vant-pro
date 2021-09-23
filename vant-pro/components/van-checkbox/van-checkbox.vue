@@ -15,7 +15,7 @@
 				name="success"
 				color="transparent"
 				:class="[$u.bem('checkbox__icon', [shape, { disabled: disabled || parentDisabled, checked: checked }])]"
-				:custom-style="iconStyle(checkedColor, checked, disabled, parentDisabled, iconSize)"
+				:custom-style="iconStyle()"
 				custom-class="icon-class"
 			/>
 		</view>
@@ -64,7 +64,7 @@ export default {
 		// icon 大小
 		iconSize: {
 			type: String|Number,
-			default: 28
+			default: 30
 		}
 	},
 	data() {
@@ -145,16 +145,17 @@ export default {
 				}
 			}
 		},
-		iconStyle(checkedColor, value, disabled, parentDisabled, iconSize) {
+		iconStyle() {
 			var styles = {
-				'font-size': this.$u.addUnit(iconSize)
+				'line-height': '1.2em',
+				'font-size': this.$u.addUnit(this.iconSize)
 			};
-			if (checkedColor && value && !disabled && !parentDisabled) {
-				styles['border-color'] = checkedColor;
-				styles['background-color'] = checkedColor;
+			if (this.checkedColor && this.checked && !this.disabled && !this.parentDisabled) {
+				styles['border-color'] = this.checkedColor;
+				styles['background-color'] = this.checkedColor;
 			}
-			if (value) {
-				styles['color'] = disabled || parentDisabled ? '#c8c9cc' : '#fff';
+			if (this.checked) {
+				styles['color'] = this.disabled || this.parentDisabled ? '#c8c9cc' : '#fff';
 			}
 			return this.$u.style(styles);
 		}
@@ -169,6 +170,7 @@ export default {
 	overflow: hidden;
 	-webkit-user-select: none;
 	user-select: none;
+	margin-bottom: 16rpx;
 }
 
 .van-checkbox--horizontal {
@@ -192,10 +194,11 @@ export default {
 	box-sizing: border-box;
 	color: transparent;
 	text-align: center;
-	transition-property: color, border-color, background-color;
 	font-size: $checkbox-size;
 	border: 1rpx solid $checkbox-border-color;
 	transition-duration: $checkbox-transition-duration;
+	width: 1.2em;
+	height: 1.2em;
 }
 
 .van-checkbox__icon--round {

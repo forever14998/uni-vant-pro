@@ -4,7 +4,7 @@
 			<view class="van_title__div">
 				<image :src="logoImage" class="van_logo"></image>
 				<view class="van_index__title">Vant Pro</view>
-			</view> 
+			</view>
 			<view class="van_index__headline">轻量、可靠的移动端 Vue 组件库</view>
 		</view>
 		<view class="van_index__card">
@@ -30,10 +30,6 @@
 					<view class="van_index__name">layout布局</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
-				<view class="van_index__unit" @click="navUnit('/pages/components/overlay/overlay')">
-					<view class="van_index__name">overlay遮罩层</view>
-					<van-icon name="arrow"></van-icon>
-				</view>
 				<view class="van_index__unit" @click="navUnit('/pages/components/popup/popup')">
 					<view class="van_index__name">popup弹出层</view>
 					<van-icon name="arrow"></van-icon>
@@ -55,28 +51,24 @@
 					<view class="van_index__name">calendar日历</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
-			</view>
-			<view class="van_card__content">
 				<view class="van_index__unit" @click="navUnit('/pages/components/checkbox/checkbox')">
 					<view class="van_index__name">checkbox复选框</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
-			</view>
-			<view class="van_card__content">
 				<view class="van_index__unit" @click="navUnit('/pages/components/datetime-picker/datetime-picker')">
 					<view class="van_index__name">datetimePicker时间选择</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
-			</view>
-			<view class="van_card__content">
 				<view class="van_index__unit" @click="navUnit('/pages/components/field/field')">
 					<view class="van_index__name">field输入框</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
-			</view>
-			<view class="van_card__content">
 				<view class="van_index__unit" @click="navUnit('/pages/components/picker/picker')">
-					<view class="van_index__name">picker选择器</view>
+					<view class="van_index__name">picker单选框</view>
+					<van-icon name="arrow"></van-icon>
+				</view>
+				<view class="van_index__unit" @click="navUnit('/pages/components/radio/radio')">
+					<view class="van_index__name">radio选择器</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
 			</view>
@@ -88,6 +80,10 @@
 					<view class="van_index__name">loading加载</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
+				<view class="van_index__unit" @click="navUnit('/pages/components/overlay/overlay')">
+					<view class="van_index__name">overlay遮罩层</view>
+					<van-icon name="arrow"></van-icon>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -97,7 +93,7 @@
 export default {
 	data() {
 		return {
-			logoImage : 'http://doc.vantpro.com/assets/logo.png'
+			logoImage: 'http://doc.vantpro.com/assets/logo.png'
 		};
 	},
 	onLoad() {},
@@ -114,7 +110,7 @@ export default {
 <style lang="scss" scoped>
 .van_index__page {
 	padding: 24rpx;
-	.van_top__introduce{
+	.van_top__introduce {
 		padding: 24rpx;
 		.van_title__div {
 			display: flex;
@@ -132,14 +128,14 @@ export default {
 				padding-left: 24rpx;
 			}
 		}
-		.van_index__headline{
+		.van_index__headline {
 			padding: 24rpx 0;
 			font-size: 28rpx;
 			color: $gray-6;
 		}
 	}
 	.van_index__card {
-		.van_card__title{
+		.van_card__title {
 			padding: 24rpx 0;
 			font-size: 28rpx;
 			color: $gray-6;

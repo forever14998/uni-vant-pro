@@ -141,6 +141,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/radio/radio",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "radio",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,
