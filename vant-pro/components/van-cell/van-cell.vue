@@ -49,7 +49,7 @@ import * as link from '../../libs/minixs/link.js';
  * @property {Boolean} is-link 是否展示右侧箭头并开启点击反馈
  * @property {Boolean} required 是否显示表单必填星号
  * @property {Boolean} clickable 是否开启点击反馈	
- * @property {String} title-width 默认选中的日期
+ * @property {String | Number} title-width 默认选中的日期
  * @property {Object} custom-style 日期格式化函数
  * @property {String} arrow-direction 箭头方向，可选值为 right|left|up|down
  * @property {Boolean} use-label-slot 是否使用 label slot
@@ -70,7 +70,7 @@ export default {
 		isLink: Boolean,
 		required: Boolean,
 		clickable: Boolean,
-		titleWidth: String,
+		titleWidth: String|Number,
 		customStyle: Object,
 		arrowDirection: String,
 		useLabelSlot: Boolean,
@@ -109,7 +109,7 @@ export default {
 	background-color: $cell-background-color;
 }
 
-.van-cell:after {
+.van-cell::after {
 	position: absolute;
 	box-sizing: border-box;
 	transform-origin: center;

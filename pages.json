@@ -132,6 +132,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/field/field",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "field",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,

@@ -1,5 +1,5 @@
 <template>
-	<view :class="[rootClass({ classPrefix, name })]" :style="[rootStyle({ customStyle, color, size })]" @tap="onClick">
+	<view :class="[rootClass({ classPrefix, name })]" :style="[rootStyle()]" @tap="onClick">
 		<van-info v-if="info || dot" :dot="dot" :info="info" custom-class="van-icon__info" />
 		<image v-if="isImage(name)" :src="name" mode="aspectFit" class="van-icon__image" />
 	</view>
@@ -29,8 +29,7 @@ export default {
 		},
 		// 图标大小
 		size: {
-			type: String || Number,
-			default: '38'
+			type: String || Number
 		},
 		// 图标颜色
 		color: {
@@ -81,12 +80,12 @@ export default {
 
 			return classes.join(' ');
 		},
-		rootStyle(data) {
+		rootStyle() {
 			return this.$u.style(
 				{
-					color: data.color,
-					'font-size': this.$u.addUnit(data.size),
-					...data.customStyle
+					color: this.color,
+					'font-size': this.$u.addUnit(this.size),
+					...this.customStyle
 				}
 			);
 		}
