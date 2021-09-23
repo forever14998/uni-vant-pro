@@ -1,5 +1,5 @@
 <template>
-	<view class="custom-class" :class="[$u.bem('rate')]" @touchmove="onTouchMove" @touchstart="onTouchMove">
+	<view class="custom-class" :class="[$u.bem('rate')]" @touchmove="onTouchMove">
 		<view
 			:class="$u.bem('rate__item')"
 			v-for="(value, index) in innerCountArray"
@@ -13,7 +13,7 @@
 				custom-class="icon-class"
 				:data-score="index"
 				:color="disabled ? disabledColor : index + 1 <= innerValue ? color : voidColor"
-				@click="onSelect"
+				@tap="onSelect(index)"
 			/>
 
 			<van-icon
@@ -24,7 +24,7 @@
 				custom-class="icon-class"
 				:data-score="index - 0.5"
 				:color="disabled ? disabledColor : index + 0.5 <= innerValue ? color : voidColor"
-				@click="onSelect"
+				@tap="onSelect(index)"
 			/>
 		</view>
 	</view>
@@ -102,7 +102,7 @@ export default {
 			if (!event) {
 				return;
 			}
-			let score = event.currentTarget.dataset.score;
+			let score = typeof event==='number' ? event : event.currentTarget.dataset.score;
 			if (!this.disabled && !this.readonly) {
 				this.innerValue = score + 1;
 				setTimeout(() => {
