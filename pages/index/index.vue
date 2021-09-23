@@ -71,6 +71,10 @@
 					<view class="van_index__name">radio选择器</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
+				<view class="van_index__unit" @click="navUnit('/pages/components/rate/rate')">
+					<view class="van_index__name">rate评分</view>
+					<van-icon name="arrow"></van-icon>
+				</view>
 			</view>
 		</view>
 		<view class="van_index__card">

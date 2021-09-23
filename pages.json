@@ -150,6 +150,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/rate/rate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "rate",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,
