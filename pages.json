@@ -42,6 +42,132 @@
             }
 
         }
+        ,{
+            "path" : "pages/components/icon/icon",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "icon",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/image/image",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "image",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/loading/loading",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "loading",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/button/button",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "button",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/toast/toast",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "toast",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/cell/cell",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "cell",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/layout/layout",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "layout",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/checkbox/checkbox",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "checkbox",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/picker/picker",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "picker",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/datetime-picker/datetime-picker",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "datetime-picker",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/field/field",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "field",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/radio/radio",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "radio",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/rate/rate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "rate",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/components/search/search",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "search",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,

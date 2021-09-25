@@ -1,19 +1,19 @@
 <template>
 	<view>
-		<van-popup v-model="value" :position="position" :round="round" :close-on-click-overlay="closeOnClick" :safe-area-inset-bottom="safeAreaInsetBottom" @close="close()">
-			<view class="van-calendar__view">
+		<van-popup v-model="value" :position="position" :closeable="true" :round="round" :close-on-click-overlay="closeOnClick" :safe-area-inset-bottom="safeAreaInsetBottom" @close="close()">
+			<view class="van-calendar">
 				<view class="van-calendar__header__border">
 					<view class="van-calendar_top_headline" :style="[headerStyle]">
 						<view class="van-calendar_top_title">{{ headerTitle }}</view>
-						<view class="iconfont icon-fork van-calendar_top_close" @click="close()"></view>
+						<!-- <view class="iconfont icon-fork van-calendar_top_close" @click="close()"></view> -->
 					</view>
 
 					<view class="van-calendar__weekdays">
 						<view v-for="(weekdaysItem, weekdaysIndex) in weekdays" :key="weekdaysIndex" class="van-calendar__weekday">{{ weekdaysItem }}</view>
 					</view>
 				</view>
-				
-				<scroll-view  scroll-y="true" :scroll-into-view="scrollIntoView">
+
+				<scroll-view scroll-y="true" :scroll-into-view="scrollIntoView">
 					<view :id="`month${allDayIndex}`" v-for="(allDayItem, allDayIndex) in allDayList" :key="allDayIndex">
 						<view class="van-calendar__month">
 							<view class="van-calendar__month-title">{{ formatMonthTitle(allDayItem) }}</view>
@@ -45,8 +45,20 @@
 						</view>
 					</view>
 				</scroll-view>
-				<view class="van-calendar__footer " :class="safeAreaInsetBottom ? 'safe-area-inset-bottom' : ''" @click="onConfirm()" v-if="(type === 'multiple') || showConfirm">
-					<view class="van-calendar__footer_button" hover-class="van-calendar__footer_button_hover" :style="[buttonStyle]">{{ buttonText }}</view>
+				
+				<view class="van-calendar__footer " :class="safeAreaInsetBottom ? 'safe-area-inset-bottom' : ''" @click="onConfirm()" v-if="type === 'multiple' || showConfirm">
+					<van-button
+						round
+						block
+						size="large"
+						type="primary"
+						:style="[buttonStyle]"
+						:disabled="getButtonDisabled(type, currentDate)"
+						nativeType="text"
+						@click="onConfirm"
+					>
+						{{ buttonText }}
+					</van-button>
 				</view>
 			</view>
 		</van-popup>
@@ -427,22 +439,22 @@ export default {
 		},
 		onConfirm() {
 			if (this.type === 'range') {
-				let rangeDateList = this.currentDate.filter(el=> !this.$u.utils.isEmpty(el))
-				if (this.$u.utils.isEmpty(this.currentDate[0])) {
+				let rangeDateList = this.currentDate.filter(el => !this.$u.validator.isEmpty(el));
+				if (this.$u.validator.isEmpty(this.currentDate[0])) {
 					uni.showToast({
 						title: `请选择开始日期`,
 						icon: 'none'
 					});
-					return
-				} else if (this.$u.utils.isEmpty(this.currentDate[1])) {
+					return;
+				} else if (this.$u.validator.isEmpty(this.currentDate[1])) {
 					uni.showToast({
 						title: `请选择结束日期`,
 						icon: 'none'
 					});
-					return
+					return;
 				} else if (!this.checkRange(this.currentDate)) {
-					return
-				};
+					return;
+				}
 			}
 			this.$emit('confirm', this.getSelectDateResult());
 		},
@@ -505,6 +517,21 @@ export default {
 			}
 
 			return this.defaultDate || this.minDate;
+		},
+		getButtonDisabled(type, currentDate) {
+		  if (this.currentDate == null) {
+		    return true;
+		  }
+		
+		  if (this.type === 'range') {
+		    return !currentDate[0] || !currentDate[1];
+		  }
+		
+		  if (this.type === 'multiple') {
+		    return !currentDate.length;
+		  }
+		
+		  return !this.currentDate;
 		}
 	}
 	// created() {
@@ -518,7 +545,7 @@ scroll-view {
 	height: 900rpx;
 }
 .van-calendar__header__border {
-	box-shadow: 0 4rpx 20rpx rgba(125, 126, 128, 0.16);
+	box-shadow: $calendar-header-box-shadow;
 }
 .van-calendar_top_headline {
 	display: flex;
@@ -527,62 +554,11 @@ scroll-view {
 	flex-direction: row;
 }
 
-.van-calendar_top_close {
-	position: absolute;
-	z-index: 1;
-	color: $van-color-disabled;
-	font-size: $van-font-size-base;
-	cursor: pointer;
-	right: $van-margin-lg;
-}
-
 .van-calendar__footer {
-	padding: $van-margin-lg;
+  flex-shrink: 0;
+  padding: $padding-md
 }
 
-.van-calendar__footer_button {
-	position: relative;
-	box-sizing: border-box;
-	transition: opacity 0.2s;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: $van-color-main;
-	color: $van-color-btn;
-	font-size: $van-font-size-base;
-}
-
-.van-calendar__footer_button_hover::before {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 100%;
-	height: 100%;
-	background-color: #000;
-	border: inherit;
-	border-color: #000;
-	border-radius: inherit;
-	transform: translate(-50%, -50%);
-	opacity: 0.1;
-	content: '';
-}
-
-.van-calendar_footer {
-	padding: 0 $van-margin-lg;
-
-	.van-calendar_footer_button {
-		width: 100%;
-		background: $van-color-main;
-		border-radius: $van-border-radius-btn;
-		height: 70rpx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: $van-color-btn;
-		font-size: $van-font-size-lg;
-		opacity: 1;
-	}
-}
 
 .van-calendar__weekdays {
 	display: flex;
@@ -591,15 +567,15 @@ scroll-view {
 .van-calendar__weekday {
 	flex: 1;
 	text-align: center;
-	font-size: $van-font-size-sm;
-	line-height: 60rpx;
+	font-size: $calendar-weekdays-font-size;
+	line-height: $calendar-weekdays-height;
 }
 
 .van-calendar__header-title {
 	text-align: center;
-	height: 88rpx;
-	font-weight: 500;
-	line-height: 88rpx;
+	height: $calendar-header-title-height;
+	font-weight: $font-weight-bold;
+	line-height: $calendar-header-title-height;
 }
 
 .van-calendar {
@@ -608,15 +584,15 @@ scroll-view {
 	-webkit-flex-direction: column;
 	flex-direction: column;
 	height: 100%;
-	background-color: $van-bg-content;
+	background-color: $calendar-background-color;
 }
 
 .van-calendar__month-title {
 	text-align: center;
-	height: 88rpx;
-	font-weight: 500;
-	font-size: $van-font-size-base;
-	line-height: 88rpx;
+	height: $calendar-header-title-height;
+	font-weight: $font-weight-bold;
+	font-size: $calendar-month-title-font-size;
+	line-height: $calendar-header-title-height;
 }
 
 .van-calendar__days {
@@ -636,8 +612,8 @@ scroll-view {
 	z-index: 0;
 	transform: translate(-50%, -50%);
 	pointer-events: none;
-	color: rgba(242, 243, 245, 0.8);
-	font-size: 450rpx;
+	color: $calendar-month-mark-color;
+	font-size: $calendar-month-mark-font-size;
 }
 
 .van-calendar__day,
@@ -651,8 +627,8 @@ scroll-view {
 .van-calendar__day {
 	position: relative;
 	width: 14.285%;
-	height: 128rpx;
-	font-size: $van-font-size-lg;
+	height: $calendar-day-height;
+	font-size: $calendar-day-font-size;
 }
 
 .van-calendar__day--end,
@@ -660,25 +636,25 @@ scroll-view {
 .van-calendar__day--multiple-selected,
 .van-calendar__day--start,
 .van-calendar__day--start-end {
-	color: $van-color-btn;
-	background-color: $van-color-main;
+	color: $calendar-range-edge-color;
+	background-color: $calendar-range-edge-background-color;
 }
 
 .van-calendar__day--start {
-	border-radius: $van-border-radius-sm 0 0 $van-border-radius-sm;
+	border-radius: $border-radius-md 0 0 $border-radius-md;
 }
 
 .van-calendar__day--end {
-	border-radius: 0 $van-border-radius-sm $van-border-radius-sm 0;
+	border-radius: 0 $border-radius-md $border-radius-md 0;
 }
 
 .van-calendar__day--multiple-selected,
 .van-calendar__day--start-end {
-	border-radius: $van-border-radius-sm;
+	border-radius: $border-radius-md;
 }
 
 .van-calendar__day--middle {
-	color: $van-color-main;
+	color: $calendar-range-middle-color;
 }
 
 .van-calendar__day--middle:after {
@@ -689,12 +665,12 @@ scroll-view {
 	left: 0;
 	background-color: currentColor;
 	content: '';
-	opacity: 0.1;
+	opacity: $calendar-range-middle-background-opacity;
 }
 
 .van-calendar__day--disabled {
 	cursor: default;
-	color: $van-color-disabled;
+	color: $calendar-day-disabled-color;
 }
 
 .van-calendar__bottom-info,
@@ -702,31 +678,31 @@ scroll-view {
 	position: absolute;
 	right: 0;
 	left: 0;
-	font-size: $van-font-size-sm;
-	line-height: 28rpx;
+	font-size: $calendar-info-font-size;
+	line-height: $calendar-info-line-height;
 }
 
 @media (max-width: 350px) {
 	.van-calendar__bottom-info,
 	.van-calendar__top-info {
-		font-size: $van-font-size-sm;
+		font-size: 18rpx;
 	}
 }
 
 .van-calendar__top-info {
-	top: $van-margin-sm;
+	top: 12rpx;
 }
 
 .van-calendar__bottom-info {
-	bottom: $van-margin-sm;
+	bottom: 12rpx;
 }
 
 .van-calendar__selected-day {
-	width: 106rpx;
-	height: 106rpx;
-	color: $van-color-btn;
-	background-color: $van-color-main;
-	border-radius: $van-border-radius-sm;
+	width: $calendar-selected-day-size;
+	height: $calendar-selected-day-size;
+	color: $calendar-selected-day-color;
+	background-color: $calendar-selected-day-background-color;
+	border-radius: $border-radius-md;
 }
 .d-flex {
 	display: flex;

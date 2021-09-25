@@ -70,6 +70,6 @@ export default {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: $van-bg-overlay;
+	background-color: $overlay-background-color;
 }
 </style>

@@ -1,7 +1,5 @@
 <template>
-	<view>
 		<view v-if="inited" class="van-transition" :class="classes" :style="rootStyle" @transitionend="onTransitionEnd"><slot /></view>
-	</view>
 </template>
 
 <script>
@@ -68,15 +66,14 @@ export default {
 	},
 	computed: {
 		rootStyle() {
-			let info = this.style([
+			return this.$u.style(
 				{
+					'z-index': this.zIndex,
 					'-webkit-transition-duration': this.currentDuration + 'ms',
 					'transition-duration': this.currentDuration + 'ms',
+					display: this.display ? null : 'none',
 					...this.customStyle
-				},
-				this.display ? null : 'display: none'
-			]);
-			return info;
+				});
 		}
 	},
 	methods: {
@@ -145,26 +142,6 @@ export default {
 				this.inited = false;
 				this.display = false;
 			}
-		},
-		style(styles) {
-			if (this.$u.validator.isArray(styles)) {
-				return styles
-					.filter(item => item != null && item !== '')
-					.map(item => this.style(item))
-					.join(';');
-			}
-
-			if (styles instanceof Object) {
-				return Object.keys(styles)
-					.filter(function(key) {
-						return styles[key] != null && styles[key] !== '';
-					})
-					.map(function(key) {
-						return [key, [styles[key]]].join(':');
-					})
-					.join(';');
-			}
-			return styles;
 		}
 	}
 };
