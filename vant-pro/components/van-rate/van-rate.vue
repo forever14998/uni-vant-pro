@@ -1,30 +1,28 @@
 <template>
-	<view class="custom-class" :class="[$u.bem('rate')]" @touchmove="onTouchMove">
+	<view class="custom-class" :class="[$u.bem('rate')]" @touchmove="onTouchMove" @touchstart="onTouchMove">
 		<view
-			:class="$u.bem('rate__item')"
+			:class="[$u.bem('rate__item')]"
 			v-for="(value, index) in innerCountArray"
 			:key="index"
-			:style="$u.style({ paddingRight: index !== count - 1 ? $u.addUnit(gutter) : null })"
+			:style="[$u.style({ paddingRight: index !== count - 1 ? $u.addUnit(gutter) : null })]"
 		>
 			<van-icon
 				:name="index + 1 <= innerValue ? icon : voidIcon"
 				:class="[$u.bem('rate__icon', [{ disabled, full: index + 1 <= innerValue }])]"
-				:style="$u.style({ fontSize: $u.addUnit(size) })"
+				:style="[$u.style({ fontSize: $u.addUnit(size) })]"
 				custom-class="icon-class"
 				:data-score="index"
 				:color="disabled ? disabledColor : index + 1 <= innerValue ? color : voidColor"
-				@tap="onSelect(index)"
 			/>
 
 			<van-icon
 				v-if="allowHalf"
 				:name="index + 0.5 <= innerValue ? icon : voidIcon"
 				:class="[$u.bem('rate__icon', ['half', { disabled, full: index + 0.5 <= innerValue }])]"
-				:style="$u.style({ fontSize: $u.addUnit(size) })"
+				:style="[$u.style({ fontSize: $u.addUnit(size) })]"
 				custom-class="icon-class"
 				:data-score="index - 0.5"
 				:color="disabled ? disabledColor : index + 0.5 <= innerValue ? color : voidColor"
-				@tap="onSelect(index)"
 			/>
 		</view>
 	</view>

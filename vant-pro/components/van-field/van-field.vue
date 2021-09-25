@@ -13,11 +13,11 @@
 		:arrow-direction="arrowDirection"
 		custom-class="van-field"
 	>
-		<slot name="left-icon" slot="icon" />
+		<view slot="icon"><slot name="left-icon" /></view>
 		<view v-if="label" class="label-class" :class="[$u.bem('field__label', { disabled })]" slot="title">{{ label }}</view>
 		<slot v-else name="label" slot="title" />
-		<view :class="$u.bem('field__body', [type])">
-			<view :class="$u.bem('field__control', [inputAlign, 'custom'])" @click="onClickInput"><slot name="input" /></view>
+		<view :class="[$u.bem('field__body', [type])]">
+			<view :class="[$u.bem('field__control', [inputAlign, 'custom'])]" @click="onClickInput"><slot name="input" /></view>
 			<textarea
 				v-if="type === 'textarea'"
 				class="input-class"
@@ -33,7 +33,7 @@
 				:placeholder-style="placeholderStyle"
 				:placeholder-class="$u.bem('field__placeholder', { error, disabled })"
 				:auto-height="!!autosize"
-				:style="inputStyle()"
+				:style="[inputStyle()]"
 				:cursor-spacing="cursorSpacing"
 				:adjust-position="adjustPosition"
 				:show-confirm-bar="showConfirmBar"
@@ -115,7 +115,7 @@
  * @property {Number} maxlength 最大输入长度，设置为 -1 的时候不限制最大长度
  * @property {String} placeholder 输入框为空时占位符
  * @property {String} placeholder-style 指定 placeholder 的样式	
- * @property {Object} custom-style 自定义样式
+ * @property {String} custom-style 自定义样式
  * @property {Boolean} is-link 是否展示右侧箭头并开启点击反馈	
  * @property {String} arrow-direction 箭头方向，可选值为 right | left | up | down
  * @property {Boolean} show-word-limit 是否显示字数统计，需要设置maxlength属性	
@@ -165,8 +165,6 @@ var __assign =
 		return __assign.apply(this, arguments);
 	};
 export default {
-	// field: true,
-	// classes: ['input-class', 'right-icon-class', 'label-class'],
 	props: __assign(__assign(__assign(__assign({}, props_1.commonProps), props_1.inputProps), props_1.textareaProps), {
 		size: String,
 		icon: String,
@@ -181,7 +179,7 @@ export default {
 		iconClass: String,
 		clickable: Boolean,
 		inputAlign: String,
-		customStyle: Object,
+		customStyle: String,
 		errorMessage: String,
 		arrowDirection: String,
 		showWordLimit: Boolean,
@@ -241,33 +239,31 @@ export default {
 		onFocus(event) {
 			this.focused = true;
 			this.setShowClear();
-			this.$emit('focus', event.detail);
+			this.$emit('focus', event);
 		},
 		onBlur(event) {
 			this.focused = false;
 			setTimeout(()=>{
 				this.setShowClear();
-			}, 0)
-			this.$emit('blur', event.detail);
+			}, 200)
+			this.$emit('blur', event);
 		},
 		onClickIcon() {
 			this.$emit('click-icon');
 		},
 		onClickInput(event) {
-			this.$emit('click-input', event.detail);
+			this.$emit('click-input', event);
 		},
 		onClear() {
-			console.log(224);
 			this.innerValue = '';
 			this.setShowClear();
-			console.log(225);
 			this.$u.utils.nextTick(() => {
 				this.emitChange();
 				this.$emit('clear', '');
 			});
 		},
 		onConfirm(event) {
-			let _a = (event.detail || {}).value,
+			let _a = (event || {}).value,
 				value = _a === void 0 ? '' : _a;
 			this.innerValue = value;
 			this.setShowClear();
@@ -279,12 +275,13 @@ export default {
 			this.emitChange();
 		},
 		onLineChange(event) {
-			this.$emit('linechange', event.detail);
+			this.$emit('linechange', event);
 		},
 		onKeyboardHeightChange(event) {
-			this.$emit('keyboardheightchange', event.detail);
+			this.$emit('keyboardheightchange', event);
 		},
 		emitChange() {
+			console.log(this.innerValue)
 			this.$u.utils.nextTick(() => {
 				this.$emit('input', this.innerValue);
 				this.$emit('change', this.innerValue);

@@ -14,7 +14,7 @@
 				v-else
 				name="success"
 				:class="[$u.bem('radio__icon', [shape, { disabled: disabled || parentDisabled, checked: innerValue === name }])]"
-				:style="iconStyle()"
+				:style="[iconStyle()]"
 				custom-class="icon-class"
 				:custom-style="iconCustomStyle()"
 			/>
@@ -71,7 +71,7 @@ export default {
 			parentDisabled: false
 		};
 	},
-	mounted() {
+	created() {
 		this.innerValue = this.value;
 	},
 	watch: {
@@ -81,15 +81,23 @@ export default {
 	},
 	methods: {
 		updateFromParent() {
-			if (!(this.$parent.$parent && this.$parent.$parent.VAN_RADIO_GROUP_STATE)) {
+			let parent = this.$parent
+			// #ifdef H5
+			parent = parent.$parent
+			// #endif
+			if (!(parent && parent.VAN_RADIO_GROUP_STATE)) {
 				return;
 			}
-			this.innerValue = this.$parent.$parent.value;
-			this.direction = this.$parent.$parent.direction;
-			this.parentDisabled = this.$parent.$parent.disabled;
+			this.innerValue = parent.value;
+			this.direction = parent.direction;
+			this.parentDisabled = parent.disabled;
 		},
 		emitChange(value) {
-			let instance = this.$parent.$parent && this.$parent.$parent.VAN_RADIO_GROUP_STATE ? this.$parent.$parent : this;
+			let parent = this.$parent
+			// #ifdef H5
+			parent = parent.$parent
+			// #endif
+			let instance = parent && parent.VAN_RADIO_GROUP_STATE ? parent : this;
 			instance.$emit('input', value);
 			instance.$emit('change', value);
 		},

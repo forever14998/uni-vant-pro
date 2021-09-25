@@ -79,12 +79,6 @@ export default {
 	data() {
 		return {
 			selectRadio: '1',
-			checkState: false,
-			groupState: {
-				a: false,
-				b: false,
-				c: false
-			},
 			disabledInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],
 			selectDisabled: null,
 			iconInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],

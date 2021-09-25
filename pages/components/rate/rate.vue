@@ -3,22 +3,6 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<!-- <van-rate
-					:value="3"
-					:count="4"
-					size="60"
-					gutter="20"
-					color="#3f8cf4"
-					void-color="#07c160"
-					icon="like"
-					void-icon="like-o"
-					:allow-half="true"
-					@change="change"
-				></van-rate> -->
-				<!-- 
-					:readonly="true"
-					:disabled="true"
-					:touchable = "false" -->
 				<van-rate
 					:value="value"
 					:count="count"

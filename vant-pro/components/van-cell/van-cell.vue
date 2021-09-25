@@ -1,6 +1,6 @@
 <template>
 	<view
-		class="custom-class"
+		class="custom-class van-cell"
 		:class="[this.$u.bem('cell', [size, { center, required, borderless: !border, clickable: isLink || clickable }])]"
 		hover-class="van-cell--hover hover-class"
 		hover-stay-time="70"
@@ -50,7 +50,7 @@ import * as link from '../../libs/minixs/link.js';
  * @property {Boolean} required 是否显示表单必填星号
  * @property {Boolean} clickable 是否开启点击反馈	
  * @property {String | Number} title-width 默认选中的日期
- * @property {Object} custom-style 日期格式化函数
+ * @property {String} custom-style 自定义样式
  * @property {String} arrow-direction 箭头方向，可选值为 right|left|up|down
  * @property {Boolean} use-label-slot 是否使用 label slot
  * @property {Boolean} border 是否显示下边框
@@ -71,7 +71,7 @@ export default {
 		required: Boolean,
 		clickable: Boolean,
 		titleWidth: String|Number,
-		customStyle: Object,
+		customStyle: String,
 		arrowDirection: String,
 		useLabelSlot: Boolean,
 		border: {
@@ -79,6 +79,8 @@ export default {
 			default: true
 		},
 		titleStyle: Object
+	},
+	computed:{
 	},
 	methods: {
 		onClick(event) {

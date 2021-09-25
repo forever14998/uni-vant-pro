@@ -3,40 +3,6 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<!--   :password="true"  -->
-				<!-- <van-field
-					name="name"
-					v-model="value"
-					label="文本"
-					size="large"
-					type="textarea"
-					:fixed="true"
-					:focus="true"
-					:border="false"
-					:clearable="true"
-					:clickable="true"
-					:required="true"
-					:center="true"
-					:title-width="80"
-					:maxlength="10"
-					:custom-style="{ height: '200rpx' }"
-					:is-link="true"
-					:show-word-limit="true"
-					:error="true"
-					error-message="输入错误"
-					error-message-align="center"
-					input-align	="center"
-					:autosize="{'minHeight': '100rpx'}"
-					left-icon="close"
-					right-icon="close"
-					clear-trigger="always"
-					@input="input"
-					@change="change"
-					@click-icon="clickIcon"
-					@focus="focus"
-					@blur="blur"
-					@click-input="clickInput"
-				></van-field> -->
 				<van-field name="name" label="文本" placeholder="显示清空" :clearable="clearable" :disabled="disabled"></van-field>
 				<van-field name="name" label="文本" placeholder="请输入文本" :left-icon="leftIcon" :right-icon="rightIcon" :readonly="readonly"></van-field>
 			</view>

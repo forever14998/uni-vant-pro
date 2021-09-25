@@ -22,8 +22,9 @@
 				:input-align="inputAlign"
 				input-class="input-class"
 				:placeholder="placeholder"
-				placeholder-style="placeholderStyle"
-				:custom-style="{ padding: '10rpx 20rpx 10rpx 0', 'background-color': 'transparent' }"
+				:placeholder-style="placeholderStyle"
+				titleWidth="0"
+				custom-style="padding:16rpx 20rpx 20rpx 0;background-color: transparent"
 				@blur="onBlur"
 				@focus="onFocus"
 				@change="onChange"
@@ -31,8 +32,8 @@
 				@clear="onClear"
 				@click-input="onClickInput"
 			>
-				<slot v-if="useLeftIconSlot" name="left-icon" slot="left-icon" />
-				<slot v-if="useRightIconSlot" name="right-icon" slot="right-icon" />
+				<view slot="left-icon" v-if="useLeftIconSlot"><slot name="left-icon" /></view>
+				<view slot="right-icon" v-if="useRightIconSlot"><slot name="right-icon" /></view>
 			</van-field>
 		</view>
 
@@ -44,9 +45,34 @@
 </template>
 
 <script>
+/**
+ * @property {Boolean} value 当前输入的值
+ * @property {String} label 搜索框左侧文本
+ * @property {String} shape 形状，可选值为 square|round
+ * @property {String} background 搜索框背景色
+ * @property {Boolean} show-action 是否在搜索框右侧显示取消按钮
+ * @property {String} action-text 取消按钮文字
+ * @property {Boolean} focus 获取焦点
+ * @property {Boolean} error 是否将输入内容标红
+ * @property {Boolean} disabled 是否禁用输入框
+ * @property {Boolean} readonly 是否只读
+ * @property {Boolean} clearable 是否启用清除控件
+ * @property {String} clear-trigger always 表示输入框不为空时展示，focus 表示输入框聚焦且不为空时展示
+ * @property {String} clear-icon 清除图标名称或图片链接
+ * @property {Number} maxlength 最大输入长度，设置为 -1 的时候不限制最大长度
+ * @property {Boolean} use-action-slot 是否使用 action slot
+ * @property {String} placeholder 输入框为空时占位符
+ * @property {String} placeholder-style 输入框为空时占位符
+ * @property {String} input-align 输入框内容对齐方式，可选值为 left center right
+ * @property {Boolean} use-left-icon-slot 是否使用输入框左侧图标 slot
+ * @property {Boolean} use-right-icon-slot 是否使用输入框右侧图标 slot
+ * @property {String} left-icon 输入框左侧图标名称或图片链接，可选值见 Icon 组件（如果设置了 use-left-icon-slot，则该属性无效）
+ * @property {String} right-icon 输入框右侧图标名称或图片链接，可选值见 Icon 组件（如果设置了 use-right-icon-slot，则该属性无效）
+ * @event {Function} change 当绑定值变化时触发的事件
+ */
 export default {
 	props: {
-		value: String|Number,
+		value: String | Number,
 		label: String,
 		focus: Boolean,
 		error: Boolean,
@@ -96,7 +122,7 @@ export default {
 	methods: {
 		onChange(event) {
 			console.log(event);
-			this.$emit('change', event.detail);
+			this.$emit('change', event);
 		},
 		onCancel() {
 			/**
@@ -109,25 +135,25 @@ export default {
 			}, 200);
 		},
 		onSearch(event) {
-			this.$emit('search', event.detail);
+			this.$emit('search', event);
 		},
 		onFocus(event) {
-			this.$emit('focus', event.detail);
+			this.$emit('focus', event);
 		},
 		onBlur(event) {
-			this.$emit('blur', event.detail);
+			this.$emit('blur', event);
 		},
 		onClear(event) {
-			this.$emit('clear', event.detail);
+			this.$emit('clear', event);
 		},
 		onClickInput(event) {
-			this.$emit('click-input', event.detail);
+			this.$emit('click-input', event);
 		}
 	}
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .van-search {
 	display: flex;
 	align-items: center;

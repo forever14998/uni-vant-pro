@@ -39,7 +39,11 @@ export default {
 	},
 	methods: {
 		updateChildren() {
-			this.$children[0].$children.forEach(child => {
+			let children = this.$children
+			// #ifdef H5
+			children = children[0].$children
+			// #endif
+			children.forEach(child => {
 				child.updateFromParent();
 			});
 		}
