@@ -47,7 +47,7 @@ import { button } from '../../libs/minixs/button.js';
  * @property {String} size 按钮尺寸，可选值为 normal large small mini
  * @property {String} color 按钮颜色，支持传入linear-gradient渐变色
  * @property {String} icon 左侧图标名称或图片链接
- * @property {Boolean} class-prefix 图标类名前缀，同 Icon 组件的 class-prefix 属性
+ * @property {String} class-prefix 图标类名前缀，同 Icon 组件的 class-prefix 属性
  * @property {Boolean} plain 是否为朴素按钮
  * @property {Boolean} block 是否为块级元素	
  * @property {Boolean} round 是否为圆形按钮	
@@ -56,7 +56,7 @@ import { button } from '../../libs/minixs/button.js';
  * @property {Boolean} hairline 是否使用 0.5px 边框
  * @property {Boolean} loading 是否显示为加载状态
  * @property {String} loading-type 加载状态图标类型，可选值为 circular|spinner
- * @property {Object} loading-text 加载状态提示文字	
+ * @property {String} loading-text 加载状态提示文字	
  * @property {String} loading-size 加载图标大小	
  * @property {Object} custom-style 自定义样式
  * @property {String} form-type 用于 form 组件，可选值为submit reset，点击分别会触发 form 组件的 submit/reset 事件

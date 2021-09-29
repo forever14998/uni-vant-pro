@@ -11,7 +11,7 @@
  * @property info 徽标内容
  * @property {String| Number } size 图标大小
  * @property {String} color 图标颜色
- * @property {String} classPrefix 图标前缀
+ * @property {String} class-prefix 图标前缀
  * @property {String} name 图标名字
  * @event {Function} click 点击图标时触发	
  */

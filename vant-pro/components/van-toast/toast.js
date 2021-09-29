@@ -58,7 +58,6 @@ function Toast(toastOptions) {
   // #ifdef MP-WEIXIN
   toast.setData(options)
   // #endif
-  console.log(options)
   clearTimeout(toast.timer);
   if (options.duration != null && options.duration > 0) {
     toast.timer = setTimeout(() => {

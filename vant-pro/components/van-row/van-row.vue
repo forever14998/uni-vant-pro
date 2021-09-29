@@ -4,7 +4,7 @@
 
 <script>
 /**
- * @property {String|| Number} gutter 列元素之间的间距（单位为 rpx）
+ * @property {String | Number} gutter 列元素之间的间距（单位为 rpx）
  */
 export default {
 	props: {

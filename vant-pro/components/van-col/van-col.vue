@@ -19,7 +19,6 @@ export default {
 	},
 	mounted() {
 		uni.$on('getGutter', msg => {
-			console.log(msg);
 			this.gutter = msg;
 		});
 	},

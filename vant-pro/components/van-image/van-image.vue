@@ -3,7 +3,7 @@
 		<image
 			v-if="!error"
 			:src="src"
-			:mode="mode(fit)"
+			:mode="fit"
 			:lazy-load="lazyLoad"
 			class="image-class van-image__img"
 			:show-menu-by-longpress="showMenuByLongpress"
@@ -29,25 +29,17 @@
  * @property {String| Number } width 宽度 单位rpx
  * @property {String| Number } height 高度 单位rpx
  * @property {String| Number } radius 圆角大小 单位rpx
- * @property {Boolean} lazyLoad 是否懒加载
- * @property {Boolean} useErrorSlot 是否自定义失败提示
- * @property {Boolean} useLoadingSlot 是否自定义加载中提示
- * @property {Boolean} showMenuByLongpress 是否开启长按图片显示识别小程序码菜单
- * @property {String} fit 图片填充模式 contain|cover|fill|none|scale-down
- * @property {Boolean} showError 是否展示图片加载失败的提示
- * @property {Boolean} showLoading 是否展示图片加载中的提示
+ * @property {Boolean} lazy-load 是否懒加载
+ * @property {Boolean} use-error-slot 是否自定义失败提示
+ * @property {Boolean} use-loading-slot 是否自定义加载中提示
+ * @property {Boolean} show-menu-by-longpress 是否开启长按图片显示识别小程序码菜单
+ * @property {String} fit 图片填充模式 widthFix | heightFix等，详情参考 uni-app image 的 mode 属性
+ * @property {Boolean} show-error 是否展示图片加载失败的提示
+ * @property {Boolean} show-loading 是否展示图片加载中的提示
  * @event {Function} click 点击图标时触发
  */
 import { button } from '../../libs/minixs/button.js';
 
-const FIT_MODE_MAP = {
-	none: 'center',
-	fill: 'scaleToFill',
-	cover: 'aspectFill',
-	contain: 'aspectFit',
-	widthFix: 'widthFix',
-	heightFix: 'heightFix'
-};
 export default {
 	mixins: [button],
 	props: {
@@ -73,10 +65,10 @@ export default {
 		// 是否自定义加载中提示
 		useLoadingSlot: Boolean,
 		showMenuByLongpress: Boolean,
-		// 图片填充模式 contain|cover|fill|none|scale-down
+		// 图片填充模式
 		fit: {
 			type: String,
-			default: 'fill'
+			default: 'scaleToFill'
 		},
 		// 是否展示图片加载失败的提示
 		showError: {
@@ -122,10 +114,6 @@ export default {
 				'border-radius': this.$u.addUnit(data.radius),
 				overflow: data.radius ? 'hidden' : null
 			});
-		},
-
-		mode(fit) {
-			return FIT_MODE_MAP[fit];
 		}
 	}
 };

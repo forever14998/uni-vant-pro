@@ -3,7 +3,7 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<van-image src="https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF" :fit="typeState" width="160" height="200" :radius="selectRadius" :round="selectRound">
+				<van-image src="https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF" :fit="typeState" width="160" height="200" :radius="selectRadius" :round="selectRound" @click="click">
 				</van-image>
 			</view>
 		</view>
@@ -52,8 +52,8 @@
 export default {
 	data() {
 		return {
-			typeInfo: [{ type: 'fill', mode: '默认' }, { type: 'contain', mode: 'contain' }, { type: 'cover', mode: 'cover' }],
-			typeState: 'fill',
+			typeInfo: [{ type: 'scaleToFill', mode: '默认' }, { type: 'aspectFit', mode: 'aspectFit' }, { type: 'aspectFill', mode: 'aspectFill' }],
+			typeState: 'scaleToFill',
 			radiusType: [{ type: null, mode: '默认' }, { type: '10', mode: '设置圆角' }],
 			selectRadius: null,
 			roundInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
@@ -64,6 +64,9 @@ export default {
 	},
 	onLoad() {},
 	methods: {
+		click(val) {
+			console.log(val)
+		},
 		/**
 		 * @param {Object} type
 		 * 图片填充模式

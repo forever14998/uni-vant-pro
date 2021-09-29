@@ -49,7 +49,7 @@ import * as link from '../../libs/minixs/link.js';
  * @property {Boolean} is-link 是否展示右侧箭头并开启点击反馈
  * @property {Boolean} required 是否显示表单必填星号
  * @property {Boolean} clickable 是否开启点击反馈	
- * @property {String | Number} title-width 默认选中的日期
+ * @property {String | Number} title-width 标题宽度
  * @property {String} custom-style 自定义样式
  * @property {String} arrow-direction 箭头方向，可选值为 right|left|up|down
  * @property {Boolean} use-label-slot 是否使用 label slot
