@@ -6,7 +6,7 @@
 /**
  * @property {Boolean} value 是否显示组件
  * @property {Number} duration 动画时长，单位毫秒
- * @property {Number} name 动画名称 fade|slide-up|slide-down|slide-left|slide-right|fade-up|fade-down|fade-left|fade-right
+ * @property {String} name 动画名称 fade|slide-up|slide-down|slide-left|slide-right|fade-up|fade-down|fade-left|fade-right
  * @property {Object} custom-style 自定义样式
  * @event {Function} before-enter 组件加载前
  * @event {Function} enter 组件加载时

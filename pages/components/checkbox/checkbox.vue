@@ -1,17 +1,17 @@
 <template>
 	<view class="content">
 		<view class="result-div">
-			<view class="headline">结果展示</view>
+			<view class="headline">结果展示{{groupState}}</view>
 			<view class="result-content">
-				<van-checkbox-group v-if="!checkState" :disabled="groupDisabled" :max="maxSelect">
-					<van-checkbox v-model="groupState.a" name="a">
+				<van-checkbox-group v-if="!checkState" v-model="groupState" :disabled="groupDisabled" :max="maxSelect">
+					<van-checkbox name="a">
 						复选框1
 					</van-checkbox>
-					<van-checkbox v-model="groupState.b" name="b">
+					<van-checkbox name="b">
 						复选框2
 					</van-checkbox>
-					<van-checkbox v-model="groupState.c" name="c">
-						复选框2
+					<van-checkbox name="c">
+						复选框3
 					</van-checkbox>
 				</van-checkbox-group>
 			</view>
@@ -89,11 +89,7 @@ export default {
 	data() {
 		return {
 			checkState: false,
-			groupState: {
-				a: false,
-				b: false,
-				c: false
-			},
+			groupState: [],
 			disabledInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],
 			selectDisabled: null,
 			iconInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],

@@ -117,24 +117,24 @@ export default {
 			}
 		},
 		setParentValue(value) {
-			const parentValue = this.getParentInfo('checkedList', '$data');
+			let parentValue = this.getParentInfo('checkedList', '$data');
 			const max = this.getParentInfo('max', '$props');
 			if (value) {
 				if (max && parentValue.length >= max) {
 					return;
 				}
-				if (parentValue.indexOf(this.name) === -1) {
+				if (!parentValue.includes(this.name)) {
 					parentValue.push(this.name);
 					// #ifdef H5
-					this.emit(this.$parent.$parent, true);
+					this.emit(this.$parent.$parent, parentValue);
 					// #endif
 					// #ifdef MP-WEIXIN
-					this.emit(this.$parent, true);
+					this.emit(this.$parent, parentValue);
 					// #endif
 				}
 			} else {
 				const index = parentValue.indexOf(this.name);
-				if (index !== -1) {
+				if (index!==-1) {
 					parentValue.splice(index, 1);
 					// #ifdef H5
 					this.emit(this.$parent.$parent, parentValue);
