@@ -2,7 +2,7 @@
 <center><font face="黑体" size=8>vantPro</font></center>
 <center><font  size=4>基于 vant 多端适配版本</font></center>
 
-## 介绍
+## 介绍 
 
 
 uni-app 社区内，只有对 vant 单端兼容的版本，vantPro 由此而发布。为了更好的适配开发者的开发习惯，拥抱庞大的开发社区和生态。   
