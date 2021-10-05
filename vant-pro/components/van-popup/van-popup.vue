@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<van-overlay v-if="overlay" v-model="value" :z-index="zIndex" :custom-style="overlayStyle" :duration="duration" @click="onClickOverlay" />
-		<view :class="getClasses" :style="popupStyle" @transitionend="onTransitionEnd">
+		<view :class="getClasses" :style="[popupStyle]" @transitionend="onTransitionEnd">
 			<slot />
 			<van-icon
 				v-if="closeable"

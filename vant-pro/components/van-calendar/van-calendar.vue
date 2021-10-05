@@ -542,7 +542,7 @@ export default {
 
 <style lang="scss">
 scroll-view {
-	height: 900rpx;
+	height: 700rpx;
 }
 .van-calendar__header__border {
 	box-shadow: $calendar-header-box-shadow;
