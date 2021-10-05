@@ -86,7 +86,7 @@ export default {
 	data() {
 		return {
 			value: '',
-			shapeInfo: [{ type: 'square', mode: '默认' }, { type: 'round', mode: '是' }],
+			shapeInfo: [{ type: 'square', mode: '默认' }, { type: 'round', mode: 'round' }],
 			shape: 'square',
 			actionInfo: [{ type: null, mode: '默认' }, { type: true, mode: '是' }],
 			showAction: null,
