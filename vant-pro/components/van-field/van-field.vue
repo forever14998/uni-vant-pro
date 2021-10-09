@@ -96,7 +96,6 @@
 
 <script>
 /**
- * @property {String} name 在表单内提交时的标识符
  * @property {String} label 输入框左侧文本
  * @property {String} size 单元格大小，可选值为 large
  * @property {String} value 当前输入的值
@@ -141,7 +140,7 @@
  * @event {Function} input 输入内容时触发	，event: 当前输入值
  * @event {Function} change 输入内容时触发，event: 当前输入值
  * @event {Function} confirm 点击完成按钮时触发，event: 当前输入值
- * @event {Function} click-icon 输入内容时触发，event: 当前输入值
+ * @event {Function} click-icon 点击尾部图标时触发
  * @event {Function} focus 输入框聚焦时触发，event: 当前输入值
  * @event {Function} blur 输入框失焦时触发，event.value: 当前输入值;event.cursor: 游标位置
  * @event {Function} clear 点击清空控件时触发
@@ -281,7 +280,6 @@ export default {
 			this.$emit('keyboardheightchange', event);
 		},
 		emitChange() {
-			console.log(this.innerValue)
 			this.$u.utils.nextTick(() => {
 				this.$emit('input', this.innerValue);
 				this.$emit('change', this.innerValue);

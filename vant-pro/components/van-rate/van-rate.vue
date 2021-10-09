@@ -42,7 +42,7 @@
  * @property {Boolean} readonly 是否为只读状态
  * @property {Boolean} disabled 是否禁用评分
  * @property {String} disabled-color 禁用时颜色
- * @property {Boolean} touchable 是否禁用单选框内容点击
+ * @property {Boolean} touchable 是否可以通过滑动手势选择评分
  * @event {Function} change 当前分值变化时触发的事件
  */
 export default {

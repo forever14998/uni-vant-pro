@@ -3,7 +3,7 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<van-radio-group :value="selectRadio" :disabled="selectDisabled" @change="change">
+				<van-radio-group v-model="selectRadio" :disabled="selectDisabled" @change="change">
 					<van-radio name="1" :use-icon-slot="selectIcon" :shape="selectShape" :checked-color="selectColor">
 						单选1
 						<van-icon name="thumb-circle-o" slot="icon" :color="selectRadio === '1' ? '#3f8cf4' : ''" v-if="selectIcon" />

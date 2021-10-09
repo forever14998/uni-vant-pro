@@ -38,7 +38,7 @@
  * @property {Number} item-height 选项高度
  * @property {String} confirm-button-text 确认按钮文字
  * @property {String} cancel-button-text 取消按钮文字
- * @property {String} visible-item-count 可见选项个数
+ * @property {Number} visible-item-count 可见选项个数
  * @property {Number} default-index 单列选择器的默认选中项索引
  * @event {Function} confirm 点击完成按钮时触发
  * @event {Function} cancel 点击取消按钮时触发

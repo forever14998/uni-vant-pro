@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="result-div">
-			<view class="headline">结果展示{{groupState}}</view>
+			<view class="headline">结果展示</view>
 			<view class="result-content">
 				<van-checkbox-group v-if="!checkState" v-model="groupState" :disabled="groupDisabled" :max="maxSelect">
 					<van-checkbox name="a">

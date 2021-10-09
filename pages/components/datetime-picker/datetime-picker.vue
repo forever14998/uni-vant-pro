@@ -98,7 +98,7 @@ export default {
 		 * 确定事件
 		 */
 		pickerConfirm(event) {
-			console.log(typeof event ? event : new Date(event));
+			console.log(event);
 		},
 		/**
 		 * 取消事件

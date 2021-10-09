@@ -3,9 +3,16 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<van-search :value="value" placeholder="请输入文案" label="搜索" :shape="shape" :show-action="showAction" :disabled="disabled" :maxlength="maxlength" :input-align="inputAlign"
-				>
-				</van-search>
+				<van-search
+					v-model="value"
+					placeholder="请输入文案"
+					label="搜索"
+					:shape="shape"
+					:show-action="showAction"
+					:disabled="disabled"
+					:maxlength="maxlength"
+					:input-align="inputAlign"
+				></van-search>
 			</view>
 		</view>
 		<view class="condition-div">
@@ -92,7 +99,7 @@ export default {
 			showAction: null,
 			disabledInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
 			disabled: false,
-			maxlengthInfo: [{type: -1, mode: '默认' }, { type: 5, mode: '5' }],
+			maxlengthInfo: [{ type: -1, mode: '默认' }, { type: 5, mode: '5' }],
 			maxlength: -1,
 			alginInfo: [{ type: 'left', mode: '默认' }, { type: 'center', mode: 'center' }, { type: 'right', mode: 'right' }],
 			inputAlign: 'left'

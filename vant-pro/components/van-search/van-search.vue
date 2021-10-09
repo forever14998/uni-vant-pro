@@ -46,7 +46,7 @@
 
 <script>
 /**
- * @property {Boolean} value 当前输入的值
+ * @property {String|Number} value 当前输入的值
  * @property {String} label 搜索框左侧文本
  * @property {String} shape 形状，可选值为 square|round
  * @property {String} background 搜索框背景色
@@ -57,12 +57,12 @@
  * @property {Boolean} disabled 是否禁用输入框
  * @property {Boolean} readonly 是否只读
  * @property {Boolean} clearable 是否启用清除控件
- * @property {String} clear-trigger always 表示输入框不为空时展示，focus 表示输入框聚焦且不为空时展示
+ * @property {String} clear-trigger 显示清除图标的时机，always 表示输入框不为空时展示，focus 表示输入框聚焦且不为空时展示
  * @property {String} clear-icon 清除图标名称或图片链接
  * @property {Number} maxlength 最大输入长度，设置为 -1 的时候不限制最大长度
  * @property {Boolean} use-action-slot 是否使用 action slot
  * @property {String} placeholder 输入框为空时占位符
- * @property {String} placeholder-style 输入框为空时占位符
+ * @property {String} placeholder-style 指定占位符的样式	
  * @property {String} input-align 输入框内容对齐方式，可选值为 left center right
  * @property {Boolean} use-left-icon-slot 是否使用输入框左侧图标 slot
  * @property {Boolean} use-right-icon-slot 是否使用输入框右侧图标 slot
@@ -121,14 +121,9 @@ export default {
 	},
 	methods: {
 		onChange(event) {
-			console.log(event);
 			this.$emit('change', event);
 		},
 		onCancel() {
-			/**
-			 * 修复修改输入框值时，输入框失焦和赋值同时触发，赋值失效
-			 * https://github.com/youzan/@vant/weapp/issues/1768
-			 */
 			setTimeout(() => {
 				this.$emit('cancel');
 				this.$emit('change', '');

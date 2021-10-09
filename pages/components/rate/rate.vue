@@ -4,7 +4,7 @@
 			<view class="headline">结果展示</view>
 			<view class="result-content">
 				<van-rate
-					:value="value"
+					v-model="value"
 					:count="count"
 					:void-color="allowHalf ? '#c8c9cc' : ''"
 					:icon="selectIcon ? 'like' : 'star'"

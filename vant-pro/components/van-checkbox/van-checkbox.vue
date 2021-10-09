@@ -35,12 +35,12 @@
  * @property {Boolean} value 是否选中
  * @property {String} name 标识 Checkbox 名称
  * @property {Boolean} disabled 是否禁用
- * @property {Boolean} useIconSlot 是否使用 icon slot
- * @property {String} checkedColor 选中状态颜色
- * @property {String} labelPosition 文本位置，可选值为 right|left
- * @property {Boolean} labelDisabled 是否禁用单选框内容点击
+ * @property {Boolean} use-icon-slot 是否使用 icon slot
+ * @property {String} checked-color 选中状态颜色
+ * @property {String} label-position 文本位置，可选值为 right|left
+ * @property {Boolean} label-disabled 是否禁用单选框内容点击
  * @property {String} shape 形状，可选值为 round|square
- * @property {String|Number} iconSize icon 大小
+ * @property {String|Number} icon-size icon 大小
  * @event {Function} change 当绑定值变化时触发的事件
  */
 export default {

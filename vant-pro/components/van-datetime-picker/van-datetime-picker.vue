@@ -21,6 +21,7 @@
 <script>
 /**
  * @property {String | Number} value 当前选中值
+ * @property {Boolean} show-toolbar 是否显示顶部栏
  * @property {String} type 类型，可选值为 datetime | date | time | year-month不建议动态修改
  * @property {(type, values) => values} filter 选项过滤函数
  * @property {(type, value) => value} formatter 选项格式化函数

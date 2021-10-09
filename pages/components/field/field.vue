@@ -3,8 +3,8 @@
 		<view class="result-div">
 			<view class="headline">结果展示</view>
 			<view class="result-content">
-				<van-field name="name" label="文本" placeholder="显示清空" :clearable="clearable" :disabled="disabled"></van-field>
-				<van-field name="name" label="文本" placeholder="请输入文本" :left-icon="leftIcon" :right-icon="rightIcon" :readonly="readonly"></van-field>
+				<van-field label="文本" :value="text" placeholder="显示清空" :clearable="clearable" :disabled="disabled" @change="change"></van-field>
+				<van-field label="文本" v-model="value" placeholder="请输入文本" :left-icon="leftIcon" :right-icon="rightIcon" :readonly="readonly"></van-field>
 			</view>
 		</view>
 		<view class="condition-div">
@@ -84,7 +84,8 @@
 export default {
 	data() {
 		return {
-			value: '1323',
+			text: '',
+			value: '',
 			disabledInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
 			disabled: false,
 			readonlyInfo: [{ type: false, mode: '默认' }, { type: true, mode: '是' }],
