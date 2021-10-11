@@ -168,6 +168,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/components/slider/slider",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "slider",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"easycom": {
 		"autoscan": true,

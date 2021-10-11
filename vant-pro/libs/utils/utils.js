@@ -30,3 +30,17 @@ export function getAllRect(context, selector) {
 			});
 	});
 }
+export function getRect(context, selector) {
+  return new Promise((resolve)=> {
+    uni.createSelectorQuery()
+      .in(context)
+      .select(selector)
+      .boundingClientRect()
+      .exec((rect)=> {
+        if (rect === void 0) {
+          rect = [];
+        }
+        return resolve(rect[0]);
+      });
+  });
+}

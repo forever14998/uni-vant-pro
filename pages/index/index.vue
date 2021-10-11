@@ -79,6 +79,10 @@
 					<view class="van_index__name">search搜索</view>
 					<van-icon name="arrow"></van-icon>
 				</view>
+				<view class="van_index__unit" @click="navUnit('/pages/components/slider/slider')">
+					<view class="van_index__name">slider滑块</view>
+					<van-icon name="arrow"></van-icon>
+				</view>
 			</view>
 		</view>
 		<view class="van_index__card">
